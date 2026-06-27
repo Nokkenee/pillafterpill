@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PILL AFTER PILL — Wishlist the craziest game you've ever played</title>
+<meta name="description" content="A vehicular-combat fever dream. Outrun the law, outrun the flames, outrun your own pulse. Wishlist now.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=EB+Garamond:ital,wght@1,400;1,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   SHARED BASE
+   ============================================================ */
+:root{
+  --void:      #0a0a08;
+  --void-2:    #14130f;
+  --panel:     #15140f;
+  --ash:       #1d1b15;
+  --ash-2:     #262318;
+  --line:      #ffffff14;
+  --bone:      #eae6d2;
+  --bone-dim:  #b9b6a4;
+  --bone-faint:#6b6858;
+  --acid:      #c3c873;
+  --rust:      #b3551f;
+  --blood:     #6e1f17;
+  --green:     #7fa86b;
+
+  --font-display: 'Cinzel', serif;
+  --font-italic:  'EB Garamond', serif;
+  --font-body:    'Archivo', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --container:    1100px;
+  --radius:       3px;
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--void);
+  color: var(--bone);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img { display:block; max-width:100%; }
+a { color:inherit; text-decoration:none; }
+button, input, textarea, select { font-family: inherit; }
+::selection { background: var(--rust); color: var(--bone); }
+:focus-visible { outline: 2px solid var(--acid); outline-offset: 3px; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--acid);
+  margin-bottom: 1rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 5vw, 3.4rem);
+  line-height: 1.08;
+  letter-spacing: 0.01em;
+  color: var(--bone);
+}
+
+/* ============================================================
+   SITE NAV — top bar for switching pages
+   ============================================================ */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: rgba(10,10,8,0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--line);
+}
+.site-nav .brand {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  color: var(--bone);
+}
+.site-nav .brand .dot { color: var(--acid); }
+.site-nav .nav-tabs {
+  display: flex;
+  gap: 0.4rem;
+}
+.nav-tab {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--bone-dim);
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.nav-tab:hover { background: var(--ash-2); color: var(--bone); border-color: var(--bone-dim); }
+.nav-tab.active { background: var(--acid); color: var(--void); border-color: var(--acid); }
+
+/* ============================================================
+   PAGE SWITCH
+   ============================================================ */
+.page-landing,
+.page-bugboard {
+  display: none;
+}
+.page-landing.visible,
+.page-bugboard.visible {
+  display: block;
+}
+
+/* ============================================================
+   GRAIN OVERLAY
+   ============================================================ */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   HERO — 3 distinct parallax layers
+   ============================================================ */
+.hero-wrapper {
+  position: relative;
+  height: 206vh;
+  background: var(--void);
+  margin-top: 48px; /* clear site-nav */
+}
+.hero-pin {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 15%, #1c1a12 0%, var(--void) 60%);
+}
+
+/* Layer 1 — BG: static / very slow drift */
+.hero-bg {
+  position: absolute;
+  inset: -8% 0;
+  will-change: transform;
+}
+.hero-bg-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: saturate(1.05) contrast(1.04);
+}
+
+/* Fallback painted background when no real asset */
+.hero-bg-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 30%, #2a2710 0%, #0e0e08 60%),
+    linear-gradient(175deg, #1a1a0e 0%, #0a0a08 100%);
+}
+/* Fire glow blobs */
+.hero-bg-fallback::before {
+  content: '';
+  position: absolute;
+  top: 10%; left: 20%;
+  width: 60%; height: 50%;
+  background: radial-gradient(ellipse, rgba(180,80,10,0.25) 0%, transparent 65%);
+  filter: blur(40px);
+}
+.hero-bg-fallback::after {
+  content: '';
+  position: absolute;
+  top: 5%; right: 10%;
+  width: 40%; height: 40%;
+  background: radial-gradient(ellipse, rgba(195,200,115,0.12) 0%, transparent 65%);
+  filter: blur(50px);
+}
+
+/* Layer 2 — TEXT BAND: medium speed, goes diagonal */
+.hero-band {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+.hero-band-inner {
+  width: 160%;
+  max-width: none;
+  transform: rotate(-12deg);
+  opacity: 0.18;
+  mix-blend-mode: screen;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 6rem);
+  letter-spacing: 0.06em;
+  color: var(--bone);
+  line-height: 1.2;
+  user-select: none;
+  /* use the uploaded text-band image if available, else CSS text */
+}
+/* We'll use the uploaded PNG as background for the band layer */
+.hero-band-img {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  object-fit: contain;
+  opacity: 0.15;
+  mix-blend-mode: screen;
+}
+
+/* Layer 3 — CAR: fastest, flies off screen */
+.hero-car {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 5;
+  will-change: transform, opacity;
+}
+.hero-car-img {
+  width: min(90vw, 600px);
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7));
+  transform-origin: center bottom;
+}
+
+/* Vignette */
+.hero-vignette {
+  position: absolute; inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(10,10,8,0) 0%, rgba(10,10,8,0.12) 60%, rgba(10,10,8,0.92) 100%),
+    radial-gradient(120% 70% at 50% 100%, rgba(10,10,8,0) 40%, rgba(10,10,8,0.55) 100%);
+}
+
+/* Hero content */
+.hero-content {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 1.5rem;
+  will-change: opacity, transform;
+}
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 11vw, 5.5rem);
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  color: var(--bone);
+  text-shadow: 0 6px 30px rgba(0,0,0,0.8);
+}
+.hero-tagline {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  color: var(--bone-dim);
+  margin-top: 0.9rem;
+}
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  padding: 0.95rem 1.9rem;
+  margin-top: 1.8rem;
+  border: 2px solid var(--bone);
+  color: var(--void);
+  background: var(--bone);
+  cursor: pointer;
+  transition: background .2s, color .2s, transform .2s, border-color .2s;
+  text-decoration: none;
+}
+.btn:hover {
+  background: var(--acid);
+  border-color: var(--acid);
+  transform: translateY(-2px);
+}
+.btn-lg { font-size: 0.95rem; padding: 1.15rem 2.4rem; }
+.btn-outline {
+  background: transparent;
+  color: var(--bone);
+  border-color: var(--line);
+}
+.btn-outline:hover { border-color: var(--acid); color: var(--acid); }
+.btn-block { width: 100%; }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.scroll-cue {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--bone-dim);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+}
+.scroll-cue svg { animation: bob 1.8s ease-in-out infinite; }
+@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(6px); } }
+
+/* ============================================================
+   TICKER
+   ============================================================ */
+.ticker {
+  background: var(--blood);
+  border-top: 1px solid #00000055;
+  border-bottom: 1px solid #00000055;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0.65rem 0;
+}
+.ticker-track {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--bone);
+  animation: scroll-left 36s linear infinite;
+  will-change: transform;
+}
+@keyframes scroll-left {
+  0% {transform: translateX(0);}
+  100% {transform: translateX(-50%);}
+}
+
+/* ============================================================
+   PITCH
+   ============================================================ */
+.pitch {
+  padding: clamp(4rem, 10vw, 7rem) 1.5rem;
+  background: var(--void);
+}
+.pitch-inner { max-width: var(--container); margin: 0 auto; }
+.pitch-copy {
+  margin-top: 1.6rem;
+  max-width: 640px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--bone-dim);
+}
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.4rem; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 0.9rem;
+  border: 1.5px solid var(--bone-dim);
+  color: var(--bone);
+  transform: rotate(-1.5deg);
+  display: inline-block;
+}
+.tag-rust  { border-color: var(--rust);  color: var(--rust);  transform: rotate(1deg); }
+.tag-blood { border-color: var(--blood); color: #e08a78;       transform: rotate(-1deg); }
+
+/* ============================================================
+   INTEL GRID
+   ============================================================ */
+.intel { padding: 1rem 1.5rem clamp(4rem, 10vw, 7rem); background: var(--void); }
+.intel-eyebrow { max-width: var(--container); margin: 0 auto 1rem; }
+.intel-grid {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.intel-card {
+  background: var(--ash);
+  padding: 0.6rem 0.6rem 1rem;
+  border: 1px solid var(--line);
+}
+.intel-card-img-wrap {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: var(--ash-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.intel-card-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.05);
+}
+/* placeholder art when no asset */
+.intel-placeholder {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--bone-faint);
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--ash-2), var(--ash));
+}
+.intel-card figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: var(--bone-dim);
+  margin-top: 0.8rem;
+  padding: 0 0.2rem;
+}
+.case-no {
+  display: block;
+  color: var(--acid);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.3rem;
+}
+
+/* ============================================================
+   WISHLIST CTA
+   ============================================================ */
+.wishlist-cta {
+  padding: clamp(4.5rem, 12vw, 8rem) 1.5rem;
+  background: radial-gradient(80% 60% at 50% 0%, #201c12 0%, var(--void) 70%);
+  text-align: center;
+  border-top: 1px solid #ffffff10;
+}
+.cta-inner { max-width: 640px; margin: 0 auto; }
+.cta-divider {
+  margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--bone-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+.cta-divider::before, .cta-divider::after {
+  content: ''; height: 1px; width: 60px; background: #ffffff25;
+}
+.telegram-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.4rem 0.8rem 0.8rem;
+  border: 1px solid #ffffff20;
+  transition: border-color .2s, background .2s;
+  text-align: left;
+}
+.telegram-block:hover { border-color: var(--acid); background: #ffffff08; }
+.telegram-block .tg-qr {
+  width: 56px; height: 56px;
+  background: var(--bone);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+}
+.telegram-block span { font-size: 0.85rem; color: var(--bone-dim); line-height: 1.4; }
+.telegram-block strong { color: var(--acid); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  padding: 2.5rem 1.5rem 3rem;
+  text-align: center;
+  background: var(--void);
+  border-top: 1px solid #ffffff10;
+}
+.footer-word {
+  font-family: var(--font-display);
+  letter-spacing: 0.12em;
+  font-size: 0.9rem;
+  color: var(--bone-dim);
+}
+.footer-fine {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: #6b6858;
+}
+
+/* ============================================================
+   BUG BOARD styles
+   ============================================================ */
+.page-bugboard {
+  margin-top: 48px;
+  min-height: calc(100vh - 48px);
+}
+
+label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--bone-dim);
+  margin-bottom: 0.45rem;
+}
+input[type=text], input[type=password], textarea, select {
+  width: 100%;
+  background: var(--ash);
+  border: 1px solid var(--line);
+  color: var(--bone);
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+}
+input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus {
+  border-color: var(--acid);
+  outline: none;
+}
+textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
+.field { margin-bottom: 1.2rem; }
+.field-hint { font-size: 0.74rem; color: var(--bone-faint); margin-top: 0.4rem; }
+
+.file-drop {
+  border: 1.5px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--bone-dim);
+  position: relative;
+}
+.file-drop:hover { border-color: var(--acid); background: var(--ash-2); }
+.file-drop input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.file-drop.has-file { border-color: var(--green); color: var(--bone); border-style: solid; }
+.img-preview {
+  margin-top: 0.7rem;
+  max-height: 160px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+}
+
+/* board inner topbar */
+.board-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  position: sticky;
+  top: 48px;
+  z-index: 9;
+}
+.board-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 0.95rem;
+}
+.board-brand .dot { color: var(--acid); }
+.board-brand small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--bone-faint);
+  margin-top: 1px;
+}
+.board-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.board-nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius);
+  color: var(--bone-dim);
+  letter-spacing: 0.03em;
+  transition: background .15s, color .15s;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+.board-nav-link:hover { background: var(--ash-2); color: var(--bone); }
+.board-nav-link.active { background: var(--acid); color: var(--void); }
+.user-chip {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-mono); font-size: 0.78rem; color: var(--bone-dim);
+}
+.user-chip strong { color: var(--bone); }
+.btn-ghost-sm {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--bone-faint);
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.btn-ghost-sm:hover { border-color: var(--blood); color: var(--blood); }
+
+.bb-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* auth */
+.auth-shell {
+  min-height: calc(100vh - 96px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem 1.5rem;
+  background: radial-gradient(60% 50% at 50% 0%, #1c1a12 0%, var(--void) 70%);
+}
+.auth-card { width: 100%; max-width: 380px; }
+.auth-logo { text-align: center; margin-bottom: 2rem; }
+.auth-logo strong {
+  display: block;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+}
+.auth-logo small {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: var(--bone-faint);
+}
+.auth-tabs {
+  display: flex;
+  margin-bottom: 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--bone-dim);
+  cursor: pointer;
+  background: var(--ash);
+}
+.auth-tab.active { background: var(--acid); color: var(--void); }
+.auth-error {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: #c25a4a;
+  margin-bottom: 1rem;
+  min-height: 1em;
+}
+.auth-note {
+  margin-top: 1.4rem;
+  font-size: 0.74rem;
+  color: var(--bone-faint);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* board */
+.board-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+}
+.board-title { font-size: 1.4rem; font-weight: 700; }
+.board-sub { color: var(--bone-faint); font-size: 0.85rem; margin-top: 0.2rem; }
+
+.toolbar {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.filter-pill {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--bone-dim);
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+}
+.filter-pill.active { background: var(--bone); color: var(--void); border-color: var(--bone); }
+.toolbar input[type=text] { max-width: 220px; }
+.toolbar select { width: auto; }
+.toolbar-spacer { flex: 1; }
+
+.report-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.report-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+.report-row:hover { border-color: var(--acid); background: var(--ash); }
+
+.upvote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  background: var(--ash);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.3rem;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  color: var(--bone-dim);
+  transition: border-color .15s, color .15s;
+}
+.upvote:hover { border-color: var(--acid); color: var(--acid); }
+.upvote.voted { border-color: var(--acid); color: var(--acid); background: rgba(195,200,115,0.08); }
+.upvote svg { width: 12px; height: 12px; }
+.upvote span { font-size: 0.85rem; font-weight: 700; }
+
+.report-main .title-row {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+}
+.report-main .title { font-weight: 600; font-size: 0.98rem; }
+.report-meta {
+  margin-top: 0.35rem;
+  display: flex; gap: 0.9rem; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--bone-faint);
+}
+.report-side {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--bone-faint);
+  white-space: nowrap;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.05em;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+.badge-open    { color: var(--acid); }
+.badge-progress{ color: #c97a3a; }
+.badge-fixed   { color: var(--green); }
+.badge-wontfix { color: var(--bone-faint); text-decoration: line-through; }
+.badge-gh      { color: var(--bone-dim); border-style: dashed; }
+
+.empty-state {
+  text-align: center; padding: 3rem 1rem;
+  color: var(--bone-faint);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+/* detail */
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  font-family: var(--font-mono); font-size: 0.78rem;
+  color: var(--bone-faint); margin-bottom: 1.2rem;
+  cursor: pointer; border: none; background: none;
+}
+.back-link:hover { color: var(--acid); }
+
+.detail-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;
+}
+.detail-title { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
+.detail-meta {
+  margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+  font-family: var(--font-mono); font-size: 0.76rem; color: var(--bone-faint);
+}
+.status-select {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  width: auto;
+  padding: 0.4rem 0.6rem;
+}
+.detail-body {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 1.3rem; margin: 1.3rem 0;
+  line-height: 1.65; font-size: 0.95rem; color: var(--bone);
+  white-space: pre-wrap;
+}
+.attachments { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.attachment {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--ash); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 0.5rem 0.8rem;
+  font-family: var(--font-mono); font-size: 0.76rem; color: var(--bone-dim);
+}
+.detail-screenshot { margin-bottom: 1.5rem; }
+.detail-screenshot img { max-width: 100%; border-radius: var(--radius); border: 1px solid var(--line); }
+.upvote-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.8rem; }
+
+.comments-head {
+  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.05em;
+  color: var(--bone-dim); margin-bottom: 0.9rem;
+  border-top: 1px solid var(--line); padding-top: 1.5rem;
+}
+.comment { display: grid; grid-template-columns: 32px 1fr; gap: 0.8rem; margin-bottom: 1.1rem; }
+.avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--ash-2); border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 0.72rem; color: var(--acid);
+  flex-shrink: 0;
+}
+.comment-body {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 0.7rem 0.9rem;
+}
+.comment-head {
+  display: flex; gap: 0.6rem; align-items: baseline;
+  font-family: var(--font-mono); font-size: 0.74rem; margin-bottom: 0.3rem;
+}
+.comment-head strong { color: var(--bone); }
+.comment-head span { color: var(--bone-faint); }
+.comment-text { font-size: 0.9rem; line-height: 1.55; }
+.comment-form { display: flex; gap: 0.8rem; margin-top: 1.4rem; align-items: flex-start; }
+.comment-form textarea { min-height: 70px; }
+.comment-form .btn { flex-shrink: 0; }
+
+/* submit form */
+.form-card {
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 1.6rem;
+}
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* toast */
+.toast {
+  position: fixed;
+  bottom: 1.5rem; left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--bone); color: var(--void);
+  font-family: var(--font-mono); font-size: 0.8rem;
+  padding: 0.7rem 1.2rem; border-radius: var(--radius);
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s, transform .25s;
+  z-index: 1000;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 720px) {
+  .intel-grid { grid-template-columns: 1fr; }
+  .report-row { grid-template-columns: 48px 1fr; }
+  .report-side { display: none; }
+  .form-row-2 { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ticker-track { animation: none; }
+  .scroll-cue svg { animation: none; }
+  .hero-bg, .hero-band, .hero-car, .hero-content { transition: none !important; will-change: auto !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="grain-overlay" aria-hidden="true"></div>
+<div class="toast" id="toast"></div>
+
+<!-- ============ SITE NAV ============ -->
+<nav class="site-nav" id="site-nav">
+  <div class="brand"><span class="dot">●</span> PILL AFTER PILL</div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" data-page="landing">MAIN</button>
+    <button class="nav-tab" data-page="bugboard">Bug Board</button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     LANDING PAGE
+     ============================================================ -->
+<div class="page-landing visible" id="page-landing">
+
+  <!-- HERO: 3 parallax layers -->
+  <section class="hero-wrapper" id="hero">
+    <div class="hero-pin">
+
+      <!-- Layer 1 — Background scene (slowest) -->
+      <div class="hero-bg" id="hero-bg">
+        <div class="hero-bg-fallback"></div>
+        <!-- Real asset: replace src with your bg-scene image -->
+        <img class="hero-bg-img" src="car-bg.png" alt="" role="presentation">
+      </div>
+
+      <!-- Layer 2 — Text band (medium speed, diagonal) -->
+      <div class="hero-band" id="hero-band">
+        <!-- Using uploaded text-band PNG -->
+        <img class="hero-band-img" src="textband.png"
+             alt="" role="presentation"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <div class="hero-band-inner" style="display:none">
+          PILL AFTER PILL AFTER PILL AFTER PILL&nbsp;&nbsp;
+          PILL AFTER PILL AFTER PILL AFTER PILL&nbsp;&nbsp;
+          PILL AFTER PILL AFTER PILL AFTER PILL
+        </div>
+      </div>
+
+
+
+      <div class="hero-vignette" aria-hidden="true"></div>
+
+      <!-- Hero content (fades out first) -->
+      <div class="hero-content" id="hero-content">
+        <p class="eyebrow"> VEHICULAR&nbsp;COMBAT&nbsp;·&nbsp;NO&nbsp;LAWS&nbsp;·&nbsp;NO&nbsp;SURVIVORS</p>
+        <h1 class="hero-title">PILL AFTER<br>PILL</h1>
+        <p class="hero-tagline">Bones Malone is hiring </p>
+        <a href="#wishlist" class="btn">WISHLIST NOW</a>
+        <button class="scroll-cue" id="scroll-cue" aria-label="Scroll to explore">
+          <span>SCROLL</span>
+          <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
+            <path d="M7 1v18M1 13l6 6 6-6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>WITH US, OR YOU ARE JUST BARE BONES. —&nbsp;</span><span>BONES MALONE IS HIRING —&nbsp;</span>
+      <span>OUT WHEN IT'S READY —&nbsp;</span><span>PILL AFTER PILL —&nbsp;</span>
+      <span>WISHLIST NOW —&nbsp;</span><span>Join us, and I’ll throw you a bone. Refuse, and you ARE the bone. —&nbsp;</span>
+      <span>OUT WHEN IT'S READY —&nbsp;</span><span>JOIN US AND MAKE NO BONES ABOUT IT... OR I WILL. —&nbsp;</span>
+      <span>WITH US, OR YOU ARE JUST BARE BONES. —&nbsp;</span><span>BONES MALONE IS HIRING —&nbsp;</span>
+      <span>OUT WHEN IT'S READY —&nbsp;</span><span>PILL AFTER PILL —&nbsp;</span>
+      <span>WISHLIST NOW —&nbsp;</span><span>Join us, and I’ll throw you a bone. Refuse, and you ARE the bone. —&nbsp;</span>
+      <span>OUT WHEN IT'S READY —&nbsp;</span><span>JOIN US AND MAKE NO BONES ABOUT IT... OR I WILL. —&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- PITCH -->
+  <section class="pitch">
+    <div class="pitch-inner">
+      <p class="eyebrow">● THE PITCH</p>
+      <h2 class="section-title">DEAD MEN DON'T QUIT.<br>MALONE IS HIRING.</h2>
+      <p class="pitch-copy">
+        Bones Malone doesn't ask twice. You get in the car, you pick up the gun, and you forget your name — you're one of us now. 	Every road is a turf war. Every overpass is a hit. The only law that matters: keep moving, or become a pile of spare parts. 	Build your ride from the bones of everyone who said no..
+      </p>
+      <div class="tag-row">
+        <span class="tag">VEHICULAR COMBAT</span>
+        <span class="tag tag-rust">BONES & GASOLINE</span>
+        <span class="tag tag-blood">NO RESPAWNS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEL GRID -->
+  <section class="intel">
+    <p class="eyebrow intel-eyebrow">// FIELD EVIDENCE</p>
+    <div class="intel-grid">
+      <figure class="intel-card">
+        <div class="intel-card-img-wrap">
+          <img src="boyz.jpg" alt="Exhibit 01" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(0.9) contrast(1.05)">
+        </div>
+        <figcaption>
+          <span class="case-no">EXHIBIT 01</span>
+          A NEW WEAPON WAS AQUIRED BY ILLEGAL GROUPS
+        </figcaption>
+      </figure>
+      <figure class="intel-card">
+        <div class="intel-card-img-wrap">
+          <img src="copter.jpg" alt="Exhibit 02" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(0.9) contrast(1.05)">
+        </div>
+        <figcaption>
+          <span class="case-no">EXHIBIT 02</span>
+          BEWARE THE UNREGISTERED HELICOPTERS
+        </figcaption>
+      </figure>
+      <figure class="intel-card">
+        <div class="intel-card-img-wrap">
+          <img src="shii.jpg" alt="Exhibit 03" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(0.9) contrast(1.05)">
+        </div>
+        <figcaption>
+          <span class="case-no">EXHIBIT 03</span>
+          STREET VIOLENCE ERRUPTS: ARSON AND GUNFIRE REPORTED
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- WISHLIST CTA -->
+  <section class="wishlist-cta" id="wishlist">
+    <div class="cta-inner">
+      <h2 class="section-title">WISHLIST THE GAME<br>RIGHT NOW</h2>
+      <a href="https://store.steampowered.com/app/4062420/Pill_After_Pill/" class="btn btn-lg" style="margin-top:2rem;">WISHLIST ON STEAM</a>
+      <div class="cta-divider"><span>OR</span></div>
+      <a href="https://t.me/smokinCats" class="telegram-block">
+        <div class="tg-qr">📡</div>
+        <span>Learn more in our<br><strong>Telegram channel →</strong></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <p class="footer-word">PILL AFTER PILL</p>
+    <p class="footer-fine">©  2026 —  spare parts, mineral balance, and a little help from the Don</p>
+  </footer>
+
+</div><!-- /page-landing -->
+
+
+<!-- ============================================================
+     BUG BOARD PAGE
+     ============================================================ -->
+<div class="page-bugboard" id="page-bugboard">
+  <div id="bb-app"></div>
+</div>
+
+
+<script>
+/* ============================================================
+   PAGE SWITCHER
+   ============================================================ */
+(function() {
+  const tabs = document.querySelectorAll('.nav-tab');
+  const pages = {
+    landing:  document.getElementById('page-landing'),
+    bugboard: document.getElementById('page-bugboard'),
+  };
+
+  function switchTo(pageId) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.page === pageId));
+    Object.keys(pages).forEach(k => {
+      pages[k].classList.toggle('visible', k === pageId);
+    });
+    window.scrollTo(0, 0);
+    if (pageId === 'bugboard' && !window._bbInited) {
+      window._bbInited = true;
+      initBugBoard();
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => switchTo(tab.dataset.page));
+  });
+
+  window.switchPage = switchTo;
+})();
+
+
+/* ============================================================
+   HERO PARALLAX — 3 separate layers at different speeds
+   ============================================================ */
+(function() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+
+  const wrapper  = document.getElementById('hero');
+  const bg       = document.getElementById('hero-bg');
+  const band     = document.getElementById('hero-band');
+  const content  = document.getElementById('hero-content');
+
+  if (!wrapper) return;
+
+  let ticking = false;
+
+  function render() {
+    const rect = wrapper.getBoundingClientRect();
+    const scrollable = wrapper.offsetHeight - window.innerHeight;
+    let p = -rect.top / scrollable;
+    p = Math.min(Math.max(p, 0), 1);
+
+    // Layer 1 — BG: very slow, barely moves, slight zoom
+    const bgY = p * -35;
+    bg.style.transform = `translate3d(0, ${bgY}px, 0) scale(${1 + p * 0.04})`;
+
+    // Layer 2 — Text band: medium speed, drifts diagonally, blurs slightly
+    const bandX = p * -80;
+    const bandY = p * -110;
+    const bandBlur = p * 4;
+    band.style.transform = `translate3d(${bandX}px, ${bandY}px, 0)`;
+    band.style.filter = `blur(${bandBlur}px)`;
+    band.style.opacity = String(Math.max(0.18 - p * 0.3, 0));
+
+    // Hero content: fades out fast, gone by 35%
+    const cf = Math.max(1 - p / 0.35, 0);
+    content.style.opacity = String(cf);
+    content.style.transform = `translate3d(0, ${(1 - cf) * -20}px, 0)`;
+    content.style.pointerEvents = cf < 0.05 ? 'none' : 'auto';
+
+    ticking = false;
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(render);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  render();
+
+  const cue = document.getElementById('scroll-cue');
+  if (cue) {
+    cue.addEventListener('click', () => {
+      window.scrollTo({ top: wrapper.offsetHeight - window.innerHeight * 0.05, behavior: 'smooth' });
+    });
+  }
+})();
+
+
+/* ============================================================
+   BUG BOARD SPA
+   ============================================================ */
+const CONFIG = { githubRepo: 'your-org/pill-after-pill' };
+
+let MOCK_USERS = [{ username: 'dasha', password: '1234' }];
+let MOCK_REPORTS = [
+  {
+    id: 'r5', title: 'Helicopter clips through overpass geometry on Block 7',
+    description: 'On the elevated section near the docks, the police helicopter dives below the road mesh when it switches into catch-up mode. Happens consistently if you brake hard right before the overpass while it is mid-pursuit.',
+    status: 'open', author: 'rustbucket99', createdAt: Date.now() - 1000*60*60*3, upvotes: 14,
+    githubIssue: '142', logFileName: 'crash_2026-06-18_helicopter.log', screenshot: null,
+    comments: [{ author: 'dasha', text: 'Can reproduce. Looks like the hover height check ignores ramp geometry.', createdAt: Date.now()-1000*60*60*2 }],
+  },
+  {
+    id: 'r4', title: 'Enemy car spawns facing the wrong way on restart',
+    description: 'After dying and respawning at the checkpoint, one of the chasing cars always spawns facing oncoming traffic and immediately flips.',
+    status: 'progress', author: 'glue_factory', createdAt: Date.now()-1000*60*60*26, upvotes: 9,
+    githubIssue: '138', logFileName: null, screenshot: null, comments: [],
+  },
+  {
+    id: 'r3', title: 'Wishlist button on the site does nothing on Safari',
+    description: 'Tapping "Wishlist on Steam" on iOS Safari does not open the Steam page, no console errors visible.',
+    status: 'fixed', author: 'noclip_ghost', createdAt: Date.now()-1000*60*60*80, upvotes: 3,
+    githubIssue: null, logFileName: null, screenshot: null,
+    comments: [{ author: 'dasha', text: 'Was a missing target="_blank" fallback. Pushed a fix.', createdAt: Date.now()-1000*60*60*40 }],
+  },
+  {
+    id: 'r2', title: 'Feature request: let the gunner aim independently of car heading',
+    description: 'Not a bug, but logging it here since there is nowhere else — would love free-look on the turret.',
+    status: 'wontfix', author: 'skeleton_crew', createdAt: Date.now()-1000*60*60*200, upvotes: 21,
+    githubIssue: null, logFileName: null, screenshot: null,
+    comments: [{ author: 'dasha', text: 'Logging it but parking as wontfix for now — out of scope for the combat rework.', createdAt: Date.now()-1000*60*60*190 }],
+  },
+];
+let MOCK_VOTES = {};
+
+const API_BASE = '/api';
+
+function getToken() {
+  return localStorage.getItem('accessToken');
+}
+
+function setTokens(data) {
+  if (data.accessToken) localStorage.setItem('accessToken', data.accessToken);
+  if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+}
+
+async function request(path, options = {}) {
+  const headers = options.headers || {};
+  const token = getToken();
+
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...options,
+    headers,
+  });
+
+  if (!res.ok) {
+    let message = `HTTP ${res.status}`;
+    try {
+      const data = await res.json();
+      message = data.message || message;
+    } catch (_) {}
+    throw new Error(Array.isArray(message) ? message.join(', ') : message);
+  }
+
+  if (res.status === 204) return null;
+  return res.json();
+}
+const STATUS_FROM_BACK = {
+  OPEN: 'open',
+  IN_PROGRESS: 'progress',
+  FIXED: 'fixed',
+  WONTFIX: 'wontfix',
+  DUPLICATE: 'wontfix',
+};
+
+const STATUS_TO_BACK = {
+  open: 'OPEN',
+  progress: 'IN_PROGRESS',
+  fixed: 'FIXED',
+  wontfix: 'WONTFIX',
+};
+
+function mapReportFromBack(r) {
+  return {
+    id: r.id,
+    title: r.title,
+    description: r.description,
+    status: STATUS_FROM_BACK[r.status] || 'open',
+    author: r.author?.username || 'unknown',
+    createdAt: new Date(r.createdAt).getTime(),
+    upvotes: 0,
+    githubIssue: null,
+    logFileName: null,
+    screenshot: r.files && r.files[0] ? r.files[0].fileUrl : null,
+    comments: (r.comments || []).map(c => ({
+      author: c.author?.username || 'unknown',
+      text: c.body,
+      createdAt: new Date(c.createdAt).getTime(),
+    })),
+    _raw: r,
+  };
+}
+
+const API = {
+  async register(u, p) {
+    const email = `${u}@smokingcats.dev`;
+
+    await request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        email,
+        username: u,
+        password: p,
+      }),
+    });
+
+    return this.login(u, p);
+  },
+
+  async login(u, p) {
+    const data = await request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        login: u,
+        password: p,
+      }),
+    });
+
+    setTokens(data);
+
+    return {
+      username: data.user.username,
+      role: data.user.role,
+    };
+  },
+
+  async listReports() {
+    const data = await request('/bug-reports');
+    return data.items.map(mapReportFromBack);
+  },
+
+  async getReport(id) {
+    const r = await request(`/bug-reports/${id}`);
+    return mapReportFromBack(r);
+  },
+
+  async createReport({ title, description, screenshot }, author) {
+    const report = await request('/bug-reports', {
+      method: 'POST',
+      body: JSON.stringify({
+        title,
+        description,
+        priority: 'MEDIUM',
+      }),
+    });
+
+    if (screenshot && screenshot instanceof File) {
+      const fd = new FormData();
+      fd.append('file', screenshot);
+      await request(`/bug-reports/${report.id}/files`, {
+        method: 'POST',
+        body: fd,
+      });
+    }
+
+    return mapReportFromBack(report);
+  },
+
+  async setStatus(id, status) {
+    const data = await request(`/bug-reports/${id}/status`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        status: STATUS_TO_BACK[status] || 'OPEN',
+      }),
+    });
+    return mapReportFromBack(data);
+  },
+
+  async toggleUpvote(id, username) {
+    showToast('Апвоуты пока работают только в UI');
+    return this.getReport(id);
+  },
+
+  hasVoted(id, username) {
+    return false;
+  },
+
+  async addComment(id, author, text) {
+    return request(`/bug-reports/${id}/comments`, {
+      method: 'POST',
+      body: JSON.stringify({ body: text }),
+    });
+  },
+};
+
+const bbState = {
+  user: null, authMode: 'login', authError: '',
+  filterStatus: 'all', searchQuery: '', sortBy: 'newest',
+  bbRoute: 'board', bbParam: null,
+  pendingScreenshot: null, pendingLogName: null,
+};
+
+function esc(str) {
+  const d = document.createElement('div');
+  d.textContent = str == null ? '' : String(str);
+  return d.innerHTML;
+}
+function ago(ts) {
+  const d = Date.now() - ts, m = Math.round(d/60000);
+  if (m < 60) return `${m} мин назад`;
+  const h = Math.round(m/60);
+  if (h < 24) return `${h} ч назад`;
+  return `${Math.round(h/24)} дн назад`;
+}
+function statusLabel(s) { return {open:'OPEN',progress:'IN PROGRESS',fixed:'FIXED',wontfix:"WON'T FIX"}[s]||s; }
+function statusBadgeClass(s) { return {open:'badge-open',progress:'badge-progress',fixed:'badge-fixed',wontfix:'badge-wontfix'}[s]||''; }
+function initials(u) { return (u||'?').slice(0,2).toUpperCase(); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function bbNavigate(route, param) {
+  bbState.bbRoute = route;
+  bbState.bbParam = param || null;
+  bbRender();
+}
+
+function renderBBShell(inner) {
+  const r = bbState.bbRoute;
+  return `
+    <div class="board-topbar">
+      <div class="board-brand">
+        <div><span class="dot">●</span> PILL AFTER PILL<small>BUG BOARD</small></div>
+      </div>
+      <div class="board-nav">
+        <button class="board-nav-link ${r==='board'?'active':''}" onclick="bbNavigate('board')">Репорты</button>
+        <button class="board-nav-link ${r==='submit'?'active':''}" onclick="bbNavigate('submit')">+ Новый репорт</button>
+      </div>
+      <div class="user-chip">
+        <strong>${esc(bbState.user.username)}</strong>
+        <button class="btn-ghost-sm" onclick="bbLogout()">Выйти</button>
+      </div>
+    </div>
+    <div class="bb-page">${inner}</div>
+  `;
+}
+
+function bbLogout() {
+  bbState.user = null;
+  bbState.bbRoute = 'board';
+  bbRender();
+}
+
+function renderBBAuth() {
+  return `
+    <div class="auth-shell">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <strong><span style="color:var(--acid)">●</span> PILL AFTER PILL</strong>
+          <small>BUG BOARD ACCESS</small>
+        </div>
+        <div class="auth-tabs">
+          <div class="auth-tab ${bbState.authMode==='login'?'active':''}" onclick="bbSetAuthMode('login')">Вход</div>
+          <div class="auth-tab ${bbState.authMode==='register'?'active':''}" onclick="bbSetAuthMode('register')">Регистрация</div>
+        </div>
+        <div class="auth-error">${esc(bbState.authError)}</div>
+        <div class="field"><label>Логин</label><input type="text" id="auth-username" autocomplete="username"></div>
+        <div class="field"><label>Пароль</label><input type="password" id="auth-password" autocomplete="current-password"></div>
+        <button class="btn btn-block" onclick="bbDoAuth()">${bbState.authMode==='login'?'Войти':'Создать аккаунт'}</button>
+        <p class="auth-note">Демо-логин: <strong>dasha</strong> / <strong>1234</strong><br>Это фронтенд без настоящего бэкенда.</p>
+      </div>
+    </div>
+  `;
+}
+
+function bbSetAuthMode(m) { bbState.authMode = m; bbState.authError = ''; bbRender(); }
+
+async function bbDoAuth() {
+  const u = document.getElementById('auth-username')?.value.trim();
+  const p = document.getElementById('auth-password')?.value;
+  bbState.authError = '';
+  try {
+    const result = bbState.authMode === 'login' ? await API.login(u,p) : await API.register(u,p);
+    bbState.user = result;
+    bbRender();
+  } catch(err) {
+    bbState.authError = err.message;
+    bbRender();
+  }
+}
+
+async function renderBBBoard() {
+  const reports = await API.listReports();
+  let filtered = reports.filter(r => {
+    if (bbState.filterStatus !== 'all' && r.status !== bbState.filterStatus) return false;
+    if (bbState.searchQuery && !r.title.toLowerCase().includes(bbState.searchQuery.toLowerCase())) return false;
+    return true;
+  });
+  filtered.sort((a,b) => bbState.sortBy === 'top' ? b.upvotes - a.upvotes : b.createdAt - a.createdAt);
+
+  const rows = filtered.map(r => {
+    const voted = API.hasVoted(r.id, bbState.user.username);
+    const gh = r.githubIssue ? `<a class="badge badge-gh" href="https://github.com/${CONFIG.githubRepo}/issues/${r.githubIssue}" target="_blank" rel="noopener" onclick="event.stopPropagation()">gh #${esc(r.githubIssue)}</a>` : '';
+    return `
+      <div class="report-row" onclick="bbNavigate('report','${r.id}')">
+        <div class="upvote ${voted?'voted':''}" onclick="event.stopPropagation();bbUpvote('${r.id}')">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 4l8 10h-5v6H9v-6H4z" fill="currentColor"/></svg>
+          <span>${r.upvotes}</span>
+        </div>
+        <div class="report-main">
+          <div class="title-row">
+            <span class="badge ${statusBadgeClass(r.status)}">${statusLabel(r.status)}</span>
+            <span class="title">${esc(r.title)}</span>${gh}
+          </div>
+          <div class="report-meta">
+            <span>${esc(r.author)}</span><span>${ago(r.createdAt)}</span>
+            <span>💬 ${r.comments.length}</span>
+            ${r.logFileName?'<span>📎 лог</span>':''}
+          </div>
+        </div>
+        <div class="report-side">#${esc(r.id)}</div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="board-head">
+      <div>
+        <div class="board-title">Репорты игроков</div>
+        <div class="board-sub">${filtered.length} из ${reports.length} · баги, краши, всё подряд</div>
+      </div>
+    </div>
+    <div class="toolbar">
+      ${['all','open','progress','fixed','wontfix'].map(s=>`
+        <button class="filter-pill ${bbState.filterStatus===s?'active':''}" onclick="bbFilter('${s}')">${s==='all'?'Все':statusLabel(s)}</button>
+      `).join('')}
+      <div class="toolbar-spacer"></div>
+      <input type="text" placeholder="Поиск…" value="${esc(bbState.searchQuery)}" oninput="bbSearch(this.value)" style="max-width:220px">
+      <select onchange="bbSort(this.value)" style="width:auto">
+        <option value="newest" ${bbState.sortBy==='newest'?'selected':''}>Сначала новые</option>
+        <option value="top" ${bbState.sortBy==='top'?'selected':''}>Популярные</option>
+      </select>
+    </div>
+    <div class="report-list">${rows||'<div class="empty-state">Ничего не найдено.</div>'}</div>
+  `;
+}
+
+function bbFilter(f) { bbState.filterStatus = f; bbRender(); }
+function bbSearch(v) { bbState.searchQuery = v; bbRender(); }
+function bbSort(v) { bbState.sortBy = v; bbRender(); }
+async function bbUpvote(id) { await API.toggleUpvote(id, bbState.user.username); bbRender(); }
+
+async function renderBBDetail(id) {
+  let r;
+  try { r = await API.getReport(id); }
+  catch { return `<div class="empty-state">Репорт не найден. <button class="back-link" onclick="bbNavigate('board')">Вернуться</button></div>`; }
+  const voted = API.hasVoted(r.id, bbState.user.username);
+  const gh = r.githubIssue ? `<a class="badge badge-gh" href="https://github.com/${CONFIG.githubRepo}/issues/${r.githubIssue}" target="_blank">gh #${esc(r.githubIssue)}</a>` : '';
+  const comments = r.comments.map(c=>`
+    <div class="comment">
+      <div class="avatar">${esc(initials(c.author))}</div>
+      <div>
+        <div class="comment-head"><strong>${esc(c.author)}</strong><span>${ago(c.createdAt)}</span></div>
+        <div class="comment-body"><div class="comment-text">${esc(c.text)}</div></div>
+      </div>
+    </div>`).join('') || '<p style="color:var(--bone-faint);font-size:.85rem;">Комментариев пока нет.</p>';
+
+  return `
+    <button class="back-link" onclick="bbNavigate('board')">← Все репорты</button>
+    <div class="detail-head">
+      <div>
+        <div class="detail-title">${esc(r.title)}</div>
+        <div class="detail-meta"><span>от ${esc(r.author)}</span><span>${ago(r.createdAt)}</span><span>#${esc(r.id)}</span>${gh}</div>
+      </div>
+      <select class="status-select" onchange="bbSetStatus('${r.id}',this.value)">
+        ${['open','progress','fixed','wontfix'].map(s=>`<option value="${s}" ${r.status===s?'selected':''}>${statusLabel(s)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="upvote-row">
+      <div class="upvote ${voted?'voted':''}" onclick="bbUpvote('${r.id}')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 4l8 10h-5v6H9v-6H4z" fill="currentColor"/></svg>
+        <span>${r.upvotes}</span>
+      </div>
+      <span style="color:var(--bone-faint);font-size:.85rem;">апвоутов</span>
+    </div>
+    <div class="detail-body">${esc(r.description)}</div>
+    ${r.logFileName?`<div class="attachments"><div class="attachment">📎 ${esc(r.logFileName)}</div></div>`:''}
+    ${r.screenshot?`<div class="detail-screenshot"><img src="${r.screenshot}" alt="Screenshot"></div>`:''}
+    <div class="comments-head">КОММЕНТАРИИ (${r.comments.length})</div>
+    <div id="bb-comments">${comments}</div>
+    <div class="comment-form" style="margin-top:1.4rem">
+      <textarea id="bb-comment-text" placeholder="Написать комментарий…"></textarea>
+      <button class="btn" onclick="bbAddComment('${r.id}')">Отправить</button>
+    </div>
+  `;
+}
+
+async function bbSetStatus(id, s) { await API.setStatus(id,s); showToast('Статус обновлён'); bbRender(); }
+
+async function bbAddComment(id) {
+  const ta = document.getElementById('bb-comment-text');
+  if (!ta) return;
+  const text = ta.value.trim();
+  if (!text) return;
+  await API.addComment(id, bbState.user.username, text);
+  ta.value = '';
+  bbRender();
+}
+
+async function renderBBSubmit() {
+  return `
+    <button class="back-link" onclick="bbNavigate('board')">← Все репорты</button>
+    <div class="board-title" style="margin-bottom:1.4rem;">Новый баг-репорт</div>
+    <div class="form-card">
+      <div class="field"><label>Заголовок</label><input type="text" id="report-title" placeholder="Коротко: что пошло не так"></div>
+      <div class="field"><label>Описание</label><textarea id="report-description" placeholder="Что делал, что случилось, как повторить…"></textarea></div>
+      <div class="form-row-2">
+        <div class="field">
+          <label>Лог-файл (необязательно)</label>
+          <div class="file-drop" id="log-drop">
+            <span id="log-drop-label">Нажми, чтобы выбрать файл</span>
+            <input type="file" id="log-input" accept=".log,.txt,.zip" onchange="bbLogPick(this)">
+          </div>
+        </div>
+        <div class="field">
+          <label>Скриншот (необязательно)</label>
+          <div class="file-drop" id="shot-drop">
+            <span id="shot-drop-label">Нажми, чтобы выбрать картинку</span>
+            <input type="file" id="shot-input" accept="image/*" onchange="bbShotPick(this)">
+          </div>
+          <img id="shot-preview" class="img-preview" style="display:none">
+        </div>
+      </div>
+      <button class="btn btn-block" onclick="bbSubmitReport()" style="margin-top:0.6rem;">Отправить репорт</button>
+    </div>
+  `;
+}
+
+function bbLogPick(input) {
+  const f = input.files[0];
+  if (!f) return;
+  bbState.pendingLogName = f.name;
+  document.getElementById('log-drop-label').textContent = '📎 ' + f.name;
+  document.getElementById('log-drop').classList.add('has-file');
+}
+function bbShotPick(input) {
+  const f = input.files[0];
+  if (!f) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    bbState.pendingScreenshot = f;
+    document.getElementById('shot-drop-label').textContent = '🖼 ' + f.name;
+    document.getElementById('shot-drop').classList.add('has-file');
+    const prev = document.getElementById('shot-preview');
+    prev.src = e.target.result;
+    prev.style.display = 'block';
+  };
+  reader.readAsDataURL(f);
+}
+async function bbSubmitReport() {
+  const title = document.getElementById('report-title')?.value.trim();
+  const desc  = document.getElementById('report-description')?.value.trim();
+  if (!title || !desc) return;
+  const report = await API.createReport({ title, description: desc, logFileName: bbState.pendingLogName, screenshot: bbState.pendingScreenshot }, bbState.user.username);
+  bbState.pendingLogName = null;
+  bbState.pendingScreenshot = null;
+  bbNavigate('report', report.id);
+  showToast('Репорт опубликован');
+}
+
+async function bbRender() {
+  const app = document.getElementById('bb-app');
+  if (!app) return;
+
+  if (!bbState.user) {
+    app.innerHTML = renderBBAuth();
+    return;
+  }
+
+  let inner;
+  if (bbState.bbRoute === 'submit') {
+    inner = await renderBBSubmit();
+  } else if (bbState.bbRoute === 'report' && bbState.bbParam) {
+    inner = await renderBBDetail(bbState.bbParam);
+  } else {
+    inner = await renderBBBoard();
+  }
+
+  app.innerHTML = renderBBShell(inner);
+}
+
+function initBugBoard() {
+  bbRender();
+}
+</script>
+</body>
+</html>
