@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Пользователи ───────────────────────────────────────
+
+enum Role {
+  USER
+  MODERATOR
+  DEVELOPER
+  ADMIN
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  username      String    @unique
+  passwordHash  String
+  role          Role      @default(USER)
+  isVerified    Boolean   @default(false)
+  avatarUrl     String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Связи
+  emailTokens   EmailToken[]
+  bugReports    BugReport[]
+  bugComments   BugComment[]
+  forumTopics   ForumTopic[]
+  forumComments ForumComment[]
+  notifications Notification[]
+
+  @@map("users")
+}
+
+model EmailToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  type      TokenType
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("email_tokens")
+}
+
+enum TokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+// ─── Баг-репорты ────────────────────────────────────────
+
+enum BugStatus {
+  OPEN
+  IN_PROGRESS
+  FIXED
+  WONTFIX
+  DUPLICATE
+}
+
+enum BugPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model BugReport {
+  id          String      @id @default(uuid())
+  title       String
+  description String
+  status      BugStatus   @default(OPEN)
+  priority    BugPriority @default(MEDIUM)
+  gameVersion String? // сделали необязательным
+  isArchived  Boolean     @default(false)
+  extraData   Json?       // системная информация пользователя
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  authorId    String
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  files       BugFile[]
+  comments    BugComment[]
+  tags        BugTag[]
+
+  @@map("bug_reports")
+}
+
+model BugFile {
+  id          String    @id @default(uuid())
+  filename    String    // оригинальное имя (для отображения)
+  storedName  String    // UUID имя в хранилище
+  fileUrl     String
+  fileType    String    // mime type
+  fileSize    Int
+  uploadedAt  DateTime  @default(now())
+
+  reportId    String
+  report      BugReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@map("bug_files")
+}
+
+model BugComment {
+  id        String    @id @default(uuid())
+  body      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  reportId  String
+  report    BugReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  parentId  String?
+  parent    BugComment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   BugComment[] @relation("CommentReplies")
+
+  @@map("bug_comments")
+}
+
+model BugTag {
+  id       String    @id @default(uuid())
+  name     String
+
+  reportId String
+  report   BugReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+
+  @@map("bug_tags")
+}
+
+// ─── Форум ──────────────────────────────────────────────
+
+model ForumTopic {
+  id        String    @id @default(uuid())
+  title     String
+  body      String
+  isLocked  Boolean   @default(false)
+  isPinned  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  authorId  String
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  comments  ForumComment[]
+
+  @@map("forum_topics")
+}
+
+model ForumComment {
+  id        String     @id @default(uuid())
+  body      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  topicId   String
+  topic     ForumTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+
+  authorId  String
+  author    User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@map("forum_comments")
+}
+
+// ─── Уведомления ────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(uuid())
+  type      String   // "bug_comment", "status_change", "mention" и т.д.
+  payload   Json     // любые данные уведомления
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
