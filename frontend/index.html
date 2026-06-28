@@ -919,7 +919,9 @@ const Auth = {
 async function request(path, options = {}) {
   const method = (options.method || 'GET').toUpperCase();
   // Viewing (GET) is always open. Any action that creates/changes data requires login.
-  if (method !== 'GET' && !bbState.user) {
+  const isAuthEndpoint = path.startsWith('/auth/');
+
+  if (method !== 'GET' && !bbState.user && !isAuthEndpoint) {
     openAuthModal();
     throw new Error('Please log in to do that.');
   }
