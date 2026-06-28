@@ -1,44 +1,55 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<link rel="icon" href="/icon.png" type="image/x-icon">
+</head>
+
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PILL AFTER PILL — Wishlist the craziest game you've ever played</title>
+<title>Smoking Cats Dev</title>
 <meta name="description" content="A vehicular-combat fever dream. Outrun the law, outrun the flames, outrun your own pulse. Wishlist now.">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=EB+Garamond:ital,wght@1,400;1,500&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Only the local VCR OSD Mono typeface is used across the whole site -->
 
 <style>
+
+@font-face {
+  font-family: 'VCR OSD Mono Local';
+  src: url('VCR_OSD_Mono/VCR-OSD-Mono-Cyr.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+
 /* ============================================================
    SHARED BASE
    ============================================================ */
 :root{
-  --void:      #0a0a08;
-  --void-2:    #14130f;
-  --panel:     #15140f;
-  --ash:       #1d1b15;
-  --ash-2:     #262318;
+  --void:      #0a0a0a;
+  --void-2:    #141414;
+  --panel:     #151515;
+  --ash:       #1c1c1c;
+  --ash-2:     #262626;
   --line:      #ffffff14;
-  --bone:      #eae6d2;
-  --bone-dim:  #b9b6a4;
-  --bone-faint:#6b6858;
-  --acid:      #c3c873;
-  --rust:      #b3551f;
-  --blood:     #6e1f17;
-  --green:     #7fa86b;
+  --bone:      #f0f0f0;
+  --bone-dim:  #b3b3b3;
+  --bone-faint:#737373;
+  --acid:      #ff0000;
+  --rust:      #8a8a8a;
+  --blood:     #5a5a5a;
+  --green:     #cfcfcf;
 
-  --font-display: 'Cinzel', serif;
-  --font-italic:  'EB Garamond', serif;
-  --font-body:    'Archivo', sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
+  --font-display: 'VCR OSD Mono Local', monospace;
+  --font-italic:  'VCR OSD Mono Local', monospace;
+  --font-body:    'VCR OSD Mono Local', monospace;
+  --font-mono:    'VCR OSD Mono Local', monospace;
   --container:    1100px;
   --radius:       3px;
 }
 
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 body {
   background: var(--void);
   color: var(--bone);
@@ -54,7 +65,7 @@ button, input, textarea, select { font-family: inherit; }
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   letter-spacing: 0.18em;
   color: var(--acid);
   margin-bottom: 1rem;
@@ -78,7 +89,7 @@ button, input, textarea, select { font-family: inherit; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1.5rem;
+  padding: 1.05rem 1.5rem;
   background: rgba(10,10,8,0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -87,7 +98,7 @@ button, input, textarea, select { font-family: inherit; }
 .site-nav .brand {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   letter-spacing: 0.06em;
   color: var(--bone);
 }
@@ -98,7 +109,7 @@ button, input, textarea, select { font-family: inherit; }
 }
 .nav-tab {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 1.05rem;
   letter-spacing: 0.04em;
   padding: 0.45rem 1rem;
   border-radius: var(--radius);
@@ -124,376 +135,156 @@ button, input, textarea, select { font-family: inherit; }
 }
 
 /* ============================================================
-   GRAIN OVERLAY
-   ============================================================ */
-.grain-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 999;
-  pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ============================================================
-   HERO — 3 distinct parallax layers
+   HERO — fullwidth video, no parallax, no animation
    ============================================================ */
 .hero-wrapper {
   position: relative;
-  height: 206vh;
-  background: var(--void);
-  margin-top: 48px; /* clear site-nav */
-}
-.hero-pin {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow: hidden;
-  background: radial-gradient(120% 90% at 50% 15%, #1c1a12 0%, var(--void) 60%);
-}
-
-/* Layer 1 — BG: static / very slow drift */
-.hero-bg {
-  position: absolute;
-  inset: -8% 0;
-  will-change: transform;
-}
-.hero-bg-img {
-  position: absolute;
-  inset: 0;
   width: 100%;
-  height: 100%;
+  height: 90vh;
+  min-height: 480px;
+  margin-top: 48px; /* clear site-nav */
+  background: var(--void);
+  overflow: hidden;
+}
+.hero-video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 116%;           /* crop a bit off the top and bottom */
+  transform: translate(-50%, -50%);
   object-fit: cover;
-  object-position: center top;
-  filter: saturate(1.05) contrast(1.04);
+  filter: grayscale(0.15) contrast(1.05);
 }
-
-/* Fallback painted background when no real asset */
-.hero-bg-fallback {
+.hero-shade {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 30%, #2a2710 0%, #0e0e08 60%),
-    linear-gradient(175deg, #1a1a0e 0%, #0a0a08 100%);
-}
-/* Fire glow blobs */
-.hero-bg-fallback::before {
-  content: '';
-  position: absolute;
-  top: 10%; left: 20%;
-  width: 60%; height: 50%;
-  background: radial-gradient(ellipse, rgba(180,80,10,0.25) 0%, transparent 65%);
-  filter: blur(40px);
-}
-.hero-bg-fallback::after {
-  content: '';
-  position: absolute;
-  top: 5%; right: 10%;
-  width: 40%; height: 40%;
-  background: radial-gradient(ellipse, rgba(195,200,115,0.12) 0%, transparent 65%);
-  filter: blur(50px);
-}
-
-/* Layer 2 — TEXT BAND: medium speed, goes diagonal */
-.hero-band {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  will-change: transform, opacity;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.1) 35%, rgba(0,0,0,0.55) 100%);
   pointer-events: none;
 }
-.hero-band-inner {
-  width: 160%;
-  max-width: none;
-  transform: rotate(-12deg);
-  opacity: 0.18;
-  mix-blend-mode: screen;
-  white-space: nowrap;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(3rem, 8vw, 6rem);
-  letter-spacing: 0.06em;
-  color: var(--bone);
-  line-height: 1.2;
-  user-select: none;
-  /* use the uploaded text-band image if available, else CSS text */
-}
-/* We'll use the uploaded PNG as background for the band layer */
-.hero-band-img {
-  position: absolute;
-  inset: -20%;
-  width: 140%;
-  height: 140%;
-  object-fit: contain;
-  opacity: 0.15;
-  mix-blend-mode: screen;
-}
-
-/* Layer 3 — CAR: fastest, flies off screen */
-.hero-car {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  z-index: 5;
-  will-change: transform, opacity;
-}
-.hero-car-img {
-  width: min(90vw, 600px);
-  object-fit: contain;
-  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7));
-  transform-origin: center bottom;
-}
-
-/* Vignette */
-.hero-vignette {
-  position: absolute; inset: 0;
-  z-index: 6;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, rgba(10,10,8,0) 0%, rgba(10,10,8,0.12) 60%, rgba(10,10,8,0.92) 100%),
-    radial-gradient(120% 70% at 50% 100%, rgba(10,10,8,0) 40%, rgba(10,10,8,0.55) 100%);
-}
-
-/* Hero content */
 .hero-content {
   position: absolute;
   inset: 0;
-  z-index: 15;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0 1.5rem;
-  will-change: opacity, transform;
+  align-items: flex-begin;
+  text-align: left;
+  padding: 0 clamp(1.5rem, 6vw, 5rem);
+}
+.hero-content-inner { max-width: 540px; }
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  letter-spacing: 0.18em;
+  color: var(--acid);
+  margin-bottom: 0.8rem;
 }
 .hero-title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(2.6rem, 11vw, 5.5rem);
-  line-height: 0.98;
-  letter-spacing: 0.02em;
+  font-size: clamp(2.4rem, 7vw, 4.6rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
   color: var(--bone);
-  text-shadow: 0 6px 30px rgba(0,0,0,0.8);
 }
 .hero-tagline {
-  font-family: var(--font-italic);
-  font-style: italic;
-  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  margin-top: 1rem;
+  font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  line-height: 1.6;
   color: var(--bone-dim);
-  margin-top: 0.9rem;
 }
-.btn {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-weight: 700;
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  padding: 0.95rem 1.9rem;
-  margin-top: 1.8rem;
-  border: 2px solid var(--bone);
-  color: var(--void);
-  background: var(--bone);
-  cursor: pointer;
-  transition: background .2s, color .2s, transform .2s, border-color .2s;
-  text-decoration: none;
-}
-.btn:hover {
-  background: var(--acid);
-  border-color: var(--acid);
-  transform: translateY(-2px);
-}
-.btn-lg { font-size: 0.95rem; padding: 1.15rem 2.4rem; }
-.btn-outline {
-  background: transparent;
-  color: var(--bone);
-  border-color: var(--line);
-}
-.btn-outline:hover { border-color: var(--acid); color: var(--acid); }
-.btn-block { width: 100%; }
-.btn[disabled] { opacity: 0.4; cursor: not-allowed; transform: none; }
+.hero-tagline .hl { color: var(--acid); }
 
-.scroll-cue {
+.hero-actions {
   position: absolute;
-  bottom: 1.8rem;
-  left: 50%;
-  transform: translateX(-50%);
+  /* left: clamp(1.2rem, 4vw, 2.5rem); */
+  bottom: clamp(1.2rem, 4vw, 2.5rem);
+  
+  padding: 0 clamp(1.5rem, 6vw, 5rem);
   display: flex;
   flex-direction: column;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+.steam-btn {
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: none;
-  border: none;
-  color: var(--bone-dim);
+  justify-content: center;
+  width: min(210px, 70vw);
+  /* padding: 0.4rem; */
+  /* background: var(--bone); */
+  /* border: 1px solid var(--bone); */
   cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
 }
-.scroll-cue svg { animation: bob 1.8s ease-in-out infinite; }
-@keyframes bob { 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(6px); } }
-
-/* ============================================================
-   TICKER
-   ============================================================ */
-.ticker {
-  background: var(--blood);
-  border-top: 1px solid #00000055;
-  border-bottom: 1px solid #00000055;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0.65rem 0;
-}
-.ticker-track {
-  display: inline-block;
+.steam-btn img { width: 100%; height: auto; display: block; }
+.steam-btn-fallback {
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 0.78rem;
-  letter-spacing: 0.14em;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  color: var(--void);
+  padding: 0.8rem 0;
+}
+.social-row { display: flex; gap: 0.55rem; }
+.social-icon {
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.4);
   color: var(--bone);
-  animation: scroll-left 36s linear infinite;
-  will-change: transform;
+  transition: border-color .15s, color .15s;
 }
-@keyframes scroll-left {
-  0% {transform: translateX(0);}
-  100% {transform: translateX(-50%);}
-}
+.social-icon:hover { border-color: var(--acid); color: var(--acid); }
+.social-icon svg { width: 18px; height: 18px; }
 
 /* ============================================================
-   PITCH
+   ABOUT BLOCKS — static image + text, no animation
    ============================================================ */
-.pitch {
-  padding: clamp(4rem, 10vw, 7rem) 1.5rem;
-  background: var(--void);
+.about-block {
+  position: relative;
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  border-top: 1px solid var(--line);
 }
-.pitch-inner { max-width: var(--container); margin: 0 auto; }
-.pitch-copy {
-  margin-top: 1.6rem;
-  max-width: 640px;
-  font-size: 1.05rem;
+.about-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(8,8,8,0.55);
+}
+.about-block.align-right { justify-content: flex-end; text-align: right; }
+.about-block.align-left  { justify-content: flex-start; text-align: left; }
+.about-block-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 660px;
+  padding: clamp(1.5rem, 6vw, 4rem);
+}
+.about-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  letter-spacing: 0.18em;
+  color: var(--acid);
+  margin-bottom: 0.6rem;
+}
+.about-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  letter-spacing: 0.01em;
+  color: var(--bone);
+}
+.about-copy {
+  margin-top: 1.2rem;
+  font-size: 1.2rem;
   line-height: 1.7;
   color: var(--bone-dim);
 }
-.tag-row { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2.4rem; }
-.tag {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  padding: 0.5rem 0.9rem;
-  border: 1.5px solid var(--bone-dim);
-  color: var(--bone);
-  transform: rotate(-1.5deg);
-  display: inline-block;
-}
-.tag-rust  { border-color: var(--rust);  color: var(--rust);  transform: rotate(1deg); }
-.tag-blood { border-color: var(--blood); color: #e08a78;       transform: rotate(-1deg); }
-
-/* ============================================================
-   INTEL GRID
-   ============================================================ */
-.intel { padding: 1rem 1.5rem clamp(4rem, 10vw, 7rem); background: var(--void); }
-.intel-eyebrow { max-width: var(--container); margin: 0 auto 1rem; }
-.intel-grid {
-  max-width: var(--container);
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-}
-.intel-card {
-  background: var(--ash);
-  padding: 0.6rem 0.6rem 1rem;
-  border: 1px solid var(--line);
-}
-.intel-card-img-wrap {
-  width: 100%;
-  aspect-ratio: 4/3;
-  overflow: hidden;
-  background: var(--ash-2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.intel-card-img-wrap img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  filter: saturate(0.92) contrast(1.05);
-}
-/* placeholder art when no asset */
-.intel-placeholder {
-  width: 100%; height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--bone-faint);
-  letter-spacing: 0.1em;
-  background: linear-gradient(135deg, var(--ash-2), var(--ash));
-}
-.intel-card figcaption {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-  color: var(--bone-dim);
-  margin-top: 0.8rem;
-  padding: 0 0.2rem;
-}
-.case-no {
-  display: block;
-  color: var(--acid);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  margin-bottom: 0.3rem;
-}
-
-/* ============================================================
-   WISHLIST CTA
-   ============================================================ */
-.wishlist-cta {
-  padding: clamp(4.5rem, 12vw, 8rem) 1.5rem;
-  background: radial-gradient(80% 60% at 50% 0%, #201c12 0%, var(--void) 70%);
-  text-align: center;
-  border-top: 1px solid #ffffff10;
-}
-.cta-inner { max-width: 640px; margin: 0 auto; }
-.cta-divider {
-  margin: 2rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  color: var(--bone-dim);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-}
-.cta-divider::before, .cta-divider::after {
-  content: ''; height: 1px; width: 60px; background: #ffffff25;
-}
-.telegram-block {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 1.4rem 0.8rem 0.8rem;
-  border: 1px solid #ffffff20;
-  transition: border-color .2s, background .2s;
-  text-align: left;
-}
-.telegram-block:hover { border-color: var(--acid); background: #ffffff08; }
-.telegram-block .tg-qr {
-  width: 56px; height: 56px;
-  background: var(--bone);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.6rem;
-}
-.telegram-block span { font-size: 0.85rem; color: var(--bone-dim); line-height: 1.4; }
-.telegram-block strong { color: var(--acid); }
+.about-copy .hl { color: var(--acid); }
 
 /* ============================================================
    FOOTER
@@ -502,7 +293,7 @@ button, input, textarea, select { font-family: inherit; }
   padding: 2.5rem 1.5rem 3rem;
   text-align: center;
   background: var(--void);
-  border-top: 1px solid #ffffff10;
+  border-top: 1px solid var(--line);
 }
 .footer-word {
   font-family: var(--font-display);
@@ -513,27 +304,28 @@ button, input, textarea, select { font-family: inherit; }
 .footer-fine {
   margin-top: 0.5rem;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: #6b6858;
+  font-size: 0.98rem;
+  color: var(--bone-faint);
 }
+
 
 /* ============================================================
    BUG BOARD styles
    ============================================================ */
 .page-bugboard {
-  margin-top: 48px;
+  margin-top: 68px;
   min-height: calc(100vh - 48px);
 }
 
 label {
   display: block;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   letter-spacing: 0.06em;
   color: var(--bone-dim);
   margin-bottom: 0.45rem;
 }
-input[type=text], input[type=password], textarea, select {
+input[type=text], input[type=password], input[type=email], textarea, select {
   width: 100%;
   background: var(--ash);
   border: 1px solid var(--line);
@@ -542,13 +334,15 @@ input[type=text], input[type=password], textarea, select {
   border-radius: var(--radius);
   font-size: 0.92rem;
 }
-input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus {
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, textarea:focus, select:focus {
   border-color: var(--acid);
   outline: none;
 }
+
+
 textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .field { margin-bottom: 1.2rem; }
-.field-hint { font-size: 0.74rem; color: var(--bone-faint); margin-top: 0.4rem; }
+.field-hint { font-size: 0.94rem; color: var(--bone-faint); margin-top: 0.4rem; }
 
 .file-drop {
   border: 1.5px dashed var(--line);
@@ -558,7 +352,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   cursor: pointer;
   transition: border-color .15s, background .15s;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   color: var(--bone-dim);
   position: relative;
 }
@@ -597,7 +391,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .board-brand small {
   display: block;
   font-weight: 400;
-  font-size: 0.62rem;
+  font-size: 0.82rem;
   letter-spacing: 0.12em;
   color: var(--bone-faint);
   margin-top: 1px;
@@ -609,7 +403,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 }
 .board-nav-link {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   padding: 0.5rem 0.9rem;
   border-radius: var(--radius);
   color: var(--bone-dim);
@@ -626,9 +420,38 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   font-family: var(--font-mono); font-size: 0.78rem; color: var(--bone-dim);
 }
 .user-chip strong { color: var(--bone); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  padding: 0.85rem 1.7rem;
+  border: 1px solid var(--bone);
+  color: var(--void);
+  background: var(--bone);
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+.btn:hover { background: var(--acid); border-color: var(--acid); color: var(--void); }
+.btn-lg { font-size: 0.92rem; padding: 1.05rem 2.2rem; }
+.btn-outline {
+  background: transparent;
+  color: var(--bone);
+  border-color: var(--line);
+}
+.btn-outline:hover { background: transparent; border-color: var(--acid); color: var(--acid); }
+.btn-block { display: block; width: 100%; }
+.btn[disabled] { opacity: 0.4; cursor: not-allowed; }
+
 .btn-ghost-sm {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   color: var(--bone-faint);
   border: 1px solid var(--line);
   padding: 0.35rem 0.7rem;
@@ -645,13 +468,37 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   padding: 2rem 1.5rem 4rem;
 }
 
-/* auth */
+/* auth modal */
 .auth-shell {
   min-height: calc(100vh - 96px);
   display: flex; align-items: center; justify-content: center;
   padding: 2rem 1.5rem;
-  background: radial-gradient(60% 50% at 50% 0%, #1c1a12 0%, var(--void) 70%);
+  background: var(--void);
 }
+.auth-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.7);
+  padding: 1.5rem;
+}
+.auth-modal-overlay.open { display: flex; }
+.auth-modal-card {
+  width: 100%; max-width: 380px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 1.8rem;
+  position: relative;
+}
+.auth-modal-close {
+  position: absolute; top: 0.8rem; right: 0.9rem;
+  background: none; border: none; color: var(--bone-faint);
+  font-family: var(--font-mono); font-size: 1rem; cursor: pointer;
+}
+.auth-modal-close:hover { color: var(--bone); }
 .auth-card { width: 100%; max-width: 380px; }
 .auth-logo { text-align: center; margin-bottom: 2rem; }
 .auth-logo strong {
@@ -664,7 +511,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .auth-logo small {
   display: block;
   margin-top: 0.3rem;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   letter-spacing: 0.1em;
   color: var(--bone-faint);
 }
@@ -680,7 +527,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   text-align: center;
   padding: 0.6rem;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   letter-spacing: 0.04em;
   color: var(--bone-dim);
   cursor: pointer;
@@ -689,14 +536,15 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .auth-tab.active { background: var(--acid); color: var(--void); }
 .auth-error {
   font-family: var(--font-mono);
-  font-size: 0.76rem;
-  color: #c25a4a;
+  font-size: 0.96rem;
+  color: var(--bone);
+  font-weight: 700;
   margin-bottom: 1rem;
   min-height: 1em;
 }
 .auth-note {
   margin-top: 1.4rem;
-  font-size: 0.74rem;
+  font-size: 0.94rem;
   color: var(--bone-faint);
   text-align: center;
   line-height: 1.5;
@@ -712,7 +560,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   flex-wrap: wrap;
 }
 .board-title { font-size: 1.4rem; font-weight: 700; }
-.board-sub { color: var(--bone-faint); font-size: 0.85rem; margin-top: 0.2rem; }
+.board-sub { color: var(--bone-faint); font-size: 0.95rem; margin-top: 0.2rem; }
 
 .toolbar {
   display: flex;
@@ -723,7 +571,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 }
 .filter-pill {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.94rem;
   padding: 0.4rem 0.75rem;
   border-radius: 999px;
   border: 1px solid var(--line);
@@ -769,7 +617,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .upvote:hover { border-color: var(--acid); color: var(--acid); }
 .upvote.voted { border-color: var(--acid); color: var(--acid); background: rgba(195,200,115,0.08); }
 .upvote svg { width: 12px; height: 12px; }
-.upvote span { font-size: 0.85rem; font-weight: 700; }
+.upvote span { font-size: 0.95rem; font-weight: 700; }
 
 .report-main .title-row {
   display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
@@ -778,19 +626,19 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .report-meta {
   margin-top: 0.35rem;
   display: flex; gap: 0.9rem; flex-wrap: wrap;
-  font-family: var(--font-mono); font-size: 0.72rem; color: var(--bone-faint);
+  font-family: var(--font-mono); font-size: 0.92rem; color: var(--bone-faint);
 }
 .report-side {
   text-align: right;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
   color: var(--bone-faint);
   white-space: nowrap;
 }
 
 .badge {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.86rem;
   letter-spacing: 0.05em;
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
@@ -798,7 +646,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   white-space: nowrap;
 }
 .badge-open    { color: var(--acid); }
-.badge-progress{ color: #c97a3a; }
+.badge-progress{ color: var(--bone-dim); }
 .badge-fixed   { color: var(--green); }
 .badge-wontfix { color: var(--bone-faint); text-decoration: line-through; }
 .badge-gh      { color: var(--bone-dim); border-style: dashed; }
@@ -813,7 +661,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 /* detail */
 .back-link {
   display: inline-flex; align-items: center; gap: 0.4rem;
-  font-family: var(--font-mono); font-size: 0.78rem;
+  font-family: var(--font-mono); font-size: 0.98rem;
   color: var(--bone-faint); margin-bottom: 1.2rem;
   cursor: pointer; border: none; background: none;
 }
@@ -826,11 +674,11 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 .detail-title { font-size: 1.5rem; font-weight: 700; line-height: 1.3; }
 .detail-meta {
   margin-top: 0.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
-  font-family: var(--font-mono); font-size: 0.76rem; color: var(--bone-faint);
+  font-family: var(--font-mono); font-size: 0.96rem; color: var(--bone-faint);
 }
 .status-select {
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.94rem;
   width: auto;
   padding: 0.4rem 0.6rem;
 }
@@ -845,14 +693,14 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   display: flex; align-items: center; gap: 0.5rem;
   background: var(--ash); border: 1px solid var(--line);
   border-radius: var(--radius); padding: 0.5rem 0.8rem;
-  font-family: var(--font-mono); font-size: 0.76rem; color: var(--bone-dim);
+  font-family: var(--font-mono); font-size: 0.96rem; color: var(--bone-dim);
 }
 .detail-screenshot { margin-bottom: 1.5rem; }
 .detail-screenshot img { max-width: 100%; border-radius: var(--radius); border: 1px solid var(--line); }
 .upvote-row { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.8rem; }
 
 .comments-head {
-  font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.05em;
+  font-family: var(--font-mono); font-size: 0.98rem; letter-spacing: 0.05em;
   color: var(--bone-dim); margin-bottom: 0.9rem;
   border-top: 1px solid var(--line); padding-top: 1.5rem;
 }
@@ -861,7 +709,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   width: 32px; height: 32px; border-radius: 50%;
   background: var(--ash-2); border: 1px solid var(--line);
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono); font-size: 0.72rem; color: var(--acid);
+  font-family: var(--font-mono); font-size: 0.92rem; color: var(--acid);
   flex-shrink: 0;
 }
 .comment-body {
@@ -870,7 +718,7 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 }
 .comment-head {
   display: flex; gap: 0.6rem; align-items: baseline;
-  font-family: var(--font-mono); font-size: 0.74rem; margin-bottom: 0.3rem;
+  font-family: var(--font-mono); font-size: 0.94rem; margin-bottom: 0.3rem;
 }
 .comment-head strong { color: var(--bone); }
 .comment-head span { color: var(--bone-faint); }
@@ -904,10 +752,11 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
    RESPONSIVE
    ============================================================ */
 @media (max-width: 720px) {
-  .intel-grid { grid-template-columns: 1fr; }
+  .form-row-2 { grid-template-columns: 1fr; }
   .report-row { grid-template-columns: 48px 1fr; }
   .report-side { display: none; }
-  .form-row-2 { grid-template-columns: 1fr; }
+  .hero-content { align-items: center; text-align: center; }
+  .hero-actions { left: 50%; transform: translateX(-50%); align-items: center; }
 }
 
 /* ============================================================
@@ -915,20 +764,22 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ticker-track { animation: none; }
-  .scroll-cue svg { animation: none; }
-  .hero-bg, .hero-band, .hero-car, .hero-content { transition: none !important; will-change: auto !important; }
 }
+
+.badge-duplicate { color: var(--bone-faint); }
+.badge-prio-low  { color: var(--bone-faint); }
+.badge-prio-med  { color: var(--bone-dim); }
+.badge-prio-high { color: var(--bone); }
+.badge-prio-crit { color: var(--acid); }
 </style>
 </head>
 <body>
 
-<div class="grain-overlay" aria-hidden="true"></div>
 <div class="toast" id="toast"></div>
 
 <!-- ============ SITE NAV ============ -->
 <nav class="site-nav" id="site-nav">
-  <div class="brand"><span class="dot">●</span> PILL AFTER PILL</div>
+  <div class="brand">PILL AFTER PILL</div>
   <div class="nav-tabs">
     <button class="nav-tab active" data-page="landing">MAIN</button>
     <button class="nav-tab" data-page="bugboard">Bug Board</button>
@@ -936,148 +787,79 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
 </nav>
 
 <!-- ============================================================
-     LANDING PAGE
+     LANDING PAGE — onepager
      ============================================================ -->
 <div class="page-landing visible" id="page-landing">
 
-  <!-- HERO: 3 parallax layers -->
+  <!-- HERO: video background, no parallax -->
   <section class="hero-wrapper" id="hero">
-    <div class="hero-pin">
+    <video class="hero-video" src="videoplay.mp4" autoplay muted loop playsinline></video>
+    <div class="hero-shade" aria-hidden="true"></div>
 
-      <!-- Layer 1 — Background scene (slowest) -->
-      <div class="hero-bg" id="hero-bg">
-        <div class="hero-bg-fallback"></div>
-        <!-- Real asset: replace src with your bg-scene image -->
-        <img class="hero-bg-img" src="car-bg.png" alt="" role="presentation">
-      </div>
-
-      <!-- Layer 2 — Text band (medium speed, diagonal) -->
-      <div class="hero-band" id="hero-band">
-        <!-- Using uploaded text-band PNG -->
-        <img class="hero-band-img" src="textband.png"
-             alt="" role="presentation"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
-        <div class="hero-band-inner" style="display:none">
-          PILL AFTER PILL AFTER PILL AFTER PILL&nbsp;&nbsp;
-          PILL AFTER PILL AFTER PILL AFTER PILL&nbsp;&nbsp;
-          PILL AFTER PILL AFTER PILL AFTER PILL
-        </div>
-      </div>
-
-
-
-      <div class="hero-vignette" aria-hidden="true"></div>
-
-      <!-- Hero content (fades out first) -->
-      <div class="hero-content" id="hero-content">
-        <p class="eyebrow"> VEHICULAR&nbsp;COMBAT&nbsp;·&nbsp;NO&nbsp;LAWS&nbsp;·&nbsp;NO&nbsp;SURVIVORS</p>
-        <h1 class="hero-title">PILL AFTER<br>PILL</h1>
-        <p class="hero-tagline">Bones Malone is hiring </p>
-        <a href="#wishlist" class="btn">WISHLIST NOW</a>
-        <button class="scroll-cue" id="scroll-cue" aria-label="Scroll to explore">
-          <span>SCROLL</span>
-          <svg width="14" height="22" viewBox="0 0 14 22" fill="none">
-            <path d="M7 1v18M1 13l6 6 6-6" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
-        </button>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- TICKER -->
-  <div class="ticker" aria-hidden="true">
-    <div class="ticker-track">
-      <span>WITH US, OR YOU ARE JUST BARE BONES. —&nbsp;</span><span>BONES MALONE IS HIRING —&nbsp;</span>
-      <span>OUT WHEN IT'S READY —&nbsp;</span><span>PILL AFTER PILL —&nbsp;</span>
-      <span>WISHLIST NOW —&nbsp;</span><span>Join us, and I’ll throw you a bone. Refuse, and you ARE the bone. —&nbsp;</span>
-      <span>OUT WHEN IT'S READY —&nbsp;</span><span>JOIN US AND MAKE NO BONES ABOUT IT... OR I WILL. —&nbsp;</span>
-      <span>WITH US, OR YOU ARE JUST BARE BONES. —&nbsp;</span><span>BONES MALONE IS HIRING —&nbsp;</span>
-      <span>OUT WHEN IT'S READY —&nbsp;</span><span>PILL AFTER PILL —&nbsp;</span>
-      <span>WISHLIST NOW —&nbsp;</span><span>Join us, and I’ll throw you a bone. Refuse, and you ARE the bone. —&nbsp;</span>
-      <span>OUT WHEN IT'S READY —&nbsp;</span><span>JOIN US AND MAKE NO BONES ABOUT IT... OR I WILL. —&nbsp;</span>
-    </div>
-  </div>
-
-  <!-- PITCH -->
-  <section class="pitch">
-    <div class="pitch-inner">
-      <p class="eyebrow">● THE PITCH</p>
-      <h2 class="section-title">DEAD MEN DON'T QUIT.<br>MALONE IS HIRING.</h2>
-      <p class="pitch-copy">
-        Bones Malone doesn't ask twice. You get in the car, you pick up the gun, and you forget your name — you're one of us now. 	Every road is a turf war. Every overpass is a hit. The only law that matters: keep moving, or become a pile of spare parts. 	Build your ride from the bones of everyone who said no..
-      </p>
-      <div class="tag-row">
-        <span class="tag">VEHICULAR COMBAT</span>
-        <span class="tag tag-rust">BONES & GASOLINE</span>
-        <span class="tag tag-blood">NO RESPAWNS</span>
+    <div class="hero-content">
+      <div class="hero-content-inner">
+        <p class="hero-eyebrow">CURRENT PROJECT</p>
+        <h1 class="hero-title">PILL AFTER PILL</h1>
+        <!-- <p class="hero-tagline">Bones Malone is hiring. You get in the car, you pick up the gun, and you forget your name — you're <span class="hl">one of us</span> now.</p> -->
       </div>
     </div>
-  </section>
 
-  <!-- INTEL GRID -->
-  <section class="intel">
-    <p class="eyebrow intel-eyebrow">// FIELD EVIDENCE</p>
-    <div class="intel-grid">
-      <figure class="intel-card">
-        <div class="intel-card-img-wrap">
-          <img src="boyz.jpg" alt="Exhibit 01" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(0.9) contrast(1.05)">
-        </div>
-        <figcaption>
-          <span class="case-no">EXHIBIT 01</span>
-          A NEW WEAPON WAS AQUIRED BY ILLEGAL GROUPS
-        </figcaption>
-      </figure>
-      <figure class="intel-card">
-        <div class="intel-card-img-wrap">
-          <img src="copter.jpg" alt="Exhibit 02" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(0.9) contrast(1.05)">
-        </div>
-        <figcaption>
-          <span class="case-no">EXHIBIT 02</span>
-          BEWARE THE UNREGISTERED HELICOPTERS
-        </figcaption>
-      </figure>
-      <figure class="intel-card">
-        <div class="intel-card-img-wrap">
-          <img src="shii.jpg" alt="Exhibit 03" style="width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(0.9) contrast(1.05)">
-        </div>
-        <figcaption>
-          <span class="case-no">EXHIBIT 03</span>
-          STREET VIOLENCE ERRUPTS: ARSON AND GUNFIRE REPORTED
-        </figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <!-- WISHLIST CTA -->
-  <section class="wishlist-cta" id="wishlist">
-    <div class="cta-inner">
-      <h2 class="section-title">WISHLIST THE GAME<br>RIGHT NOW</h2>
-      <a href="https://store.steampowered.com/app/4062420/Pill_After_Pill/" class="btn btn-lg" style="margin-top:2rem;">WISHLIST ON STEAM</a>
-      <div class="cta-divider"><span>OR</span></div>
-      <a href="https://t.me/smokinCats" class="telegram-block">
-        <div class="tg-qr">📡</div>
-        <span>Learn more in our<br><strong>Telegram channel →</strong></span>
+    <div class="hero-actions">
+      <a href="https://store.steampowered.com/app/4062420/Pill_After_Pill/" class="steam-btn" target="_blank" rel="noopener">
+        <img src="steamwishlist.png" alt="Wishlist on Steam">
+        <!-- <span class="steam-btn-fallback">WISHLIST ON STEAM</span> -->
       </a>
+      <div class="social-row">
+        <a class="social-icon" href="https://discord.gg/b4UnT3bdwH" target="_blank" rel="noopener" aria-label="Discord">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19.7 19.7 0 0 0 15.6 3l-.3.6a14 14 0 0 1 4 1.6 16 16 0 0 0-15 0 14 14 0 0 1 4-1.6L8 3a19.7 19.7 0 0 0-4.7 1.4S0 9.7 0 16c0 0 2 2.3 5.7 2.4l1-1.4a9 9 0 0 1-2.4-1.2s.4.3 1 .5a14 14 0 0 0 13.4 0c.6-.2 1-.5 1-.5a9 9 0 0 1-2.4 1.2l1 1.4c3.7-.1 5.7-2.4 5.7-2.4 0-6.3-3.7-11.6-3.7-11.6ZM8 13.5c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8c.9 0 1.6.8 1.6 1.8s-.7 1.8-1.6 1.8Zm8 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8c.9 0 1.6.8 1.6 1.8s-.7 1.8-1.6 1.8Z"/></svg>
+        </a>
+        <a class="social-icon" href="https://t.me/smokinCats" target="_blank" rel="noopener" aria-label="Telegram">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.6 20c-.2.9-.8 1.1-1.6.7l-4.4-3.3-2.1 2c-.2.2-.4.4-.9.4l.3-4.5L18 7.7c.4-.3-.1-.5-.5-.2L8 13.6 3.6 12.2c-.9-.3-.9-.9.2-1.3l16.7-6.4c.8-.3 1.5.2 1.4 1.8Z"/></svg>
+        </a>
+        <a class="social-icon" href="https://x.com/smokingcatsdev" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 3H22l-7 8 7.5 10h-6l-4.7-6.2L6 21H3l7.5-8.6L3 3h6l4.3 5.7L18.9 3Z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT THE GAME -->
+  <section class="about-block align-left" style="background-image:url('copter.jpg');">
+    <div class="about-block-inner">
+      <p class="about-eyebrow">ABOUT THE GAME</p>
+      <h2 class="about-title">VEHICULAR COMBAT - PILL AFTER PILL</h2>
+      <p class="about-copy">
+        You’re a pill-dependent driver with paranoid schizophrenia, forced to escort a skeletal mafia boss across hostile territory. Your real enemy isn’t the gang chasing you — it’s the fear slowly consuming your mind. Drive, Shoot, Take <span class="hl">Pill after Pill after Pill after Pill after Pill after Pill after</span>...
+      </p>
+    </div>
+  </section>
+
+  <!-- ABOUT THE TEAM -->
+  <section class="about-block align-right" style="background-image:url('boyz.jpg');">
+    <div class="about-block-inner">
+      <p class="about-eyebrow">ABOUT THE TEAM</p>
+      <h2 class="about-title">SMOKING CATS STUDIOS</h2>
+      <p class="about-copy">
+        A small independent team of 3 people, building games, nothing else to say
+      </p>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="site-footer">
     <p class="footer-word">PILL AFTER PILL</p>
-    <p class="footer-fine">©  2026 —  spare parts, mineral balance, and a little help from the Don</p>
+    <p class="footer-fine">© 2026 — Smoking Cats Studios</p>
   </footer>
 
 </div><!-- /page-landing -->
-
 
 <!-- ============================================================
      BUG BOARD PAGE
      ============================================================ -->
 <div class="page-bugboard" id="page-bugboard">
   <div id="bb-app"></div>
+  <div id="auth-modal-root"></div>
 </div>
-
 
 <script>
 /* ============================================================
@@ -1109,576 +891,943 @@ textarea { resize: vertical; min-height: 110px; line-height: 1.5; }
   window.switchPage = switchTo;
 })();
 
-
 /* ============================================================
-   HERO PARALLAX — 3 separate layers at different speeds
+   BUG BOARD — REAL API
    ============================================================ */
-(function() {
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduceMotion) return;
-
-  const wrapper  = document.getElementById('hero');
-  const bg       = document.getElementById('hero-bg');
-  const band     = document.getElementById('hero-band');
-  const content  = document.getElementById('hero-content');
-
-  if (!wrapper) return;
-
-  let ticking = false;
-
-  function render() {
-    const rect = wrapper.getBoundingClientRect();
-    const scrollable = wrapper.offsetHeight - window.innerHeight;
-    let p = -rect.top / scrollable;
-    p = Math.min(Math.max(p, 0), 1);
-
-    // Layer 1 — BG: very slow, barely moves, slight zoom
-    const bgY = p * -35;
-    bg.style.transform = `translate3d(0, ${bgY}px, 0) scale(${1 + p * 0.04})`;
-
-    // Layer 2 — Text band: medium speed, drifts diagonally, blurs slightly
-    const bandX = p * -80;
-    const bandY = p * -110;
-    const bandBlur = p * 4;
-    band.style.transform = `translate3d(${bandX}px, ${bandY}px, 0)`;
-    band.style.filter = `blur(${bandBlur}px)`;
-    band.style.opacity = String(Math.max(0.18 - p * 0.3, 0));
-
-    // Hero content: fades out fast, gone by 35%
-    const cf = Math.max(1 - p / 0.35, 0);
-    content.style.opacity = String(cf);
-    content.style.transform = `translate3d(0, ${(1 - cf) * -20}px, 0)`;
-    content.style.pointerEvents = cf < 0.05 ? 'none' : 'auto';
-
-    ticking = false;
-  }
-
-  function onScroll() {
-    if (!ticking) {
-      requestAnimationFrame(render);
-      ticking = true;
-    }
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  render();
-
-  const cue = document.getElementById('scroll-cue');
-  if (cue) {
-    cue.addEventListener('click', () => {
-      window.scrollTo({ top: wrapper.offsetHeight - window.innerHeight * 0.05, behavior: 'smooth' });
-    });
-  }
-})();
-
-
-/* ============================================================
-   BUG BOARD SPA
-   ============================================================ */
-const CONFIG = { githubRepo: 'your-org/pill-after-pill' };
-
-let MOCK_USERS = [{ username: 'dasha', password: '1234' }];
-let MOCK_REPORTS = [
-  {
-    id: 'r5', title: 'Helicopter clips through overpass geometry on Block 7',
-    description: 'On the elevated section near the docks, the police helicopter dives below the road mesh when it switches into catch-up mode. Happens consistently if you brake hard right before the overpass while it is mid-pursuit.',
-    status: 'open', author: 'rustbucket99', createdAt: Date.now() - 1000*60*60*3, upvotes: 14,
-    githubIssue: '142', logFileName: 'crash_2026-06-18_helicopter.log', screenshot: null,
-    comments: [{ author: 'dasha', text: 'Can reproduce. Looks like the hover height check ignores ramp geometry.', createdAt: Date.now()-1000*60*60*2 }],
-  },
-  {
-    id: 'r4', title: 'Enemy car spawns facing the wrong way on restart',
-    description: 'After dying and respawning at the checkpoint, one of the chasing cars always spawns facing oncoming traffic and immediately flips.',
-    status: 'progress', author: 'glue_factory', createdAt: Date.now()-1000*60*60*26, upvotes: 9,
-    githubIssue: '138', logFileName: null, screenshot: null, comments: [],
-  },
-  {
-    id: 'r3', title: 'Wishlist button on the site does nothing on Safari',
-    description: 'Tapping "Wishlist on Steam" on iOS Safari does not open the Steam page, no console errors visible.',
-    status: 'fixed', author: 'noclip_ghost', createdAt: Date.now()-1000*60*60*80, upvotes: 3,
-    githubIssue: null, logFileName: null, screenshot: null,
-    comments: [{ author: 'dasha', text: 'Was a missing target="_blank" fallback. Pushed a fix.', createdAt: Date.now()-1000*60*60*40 }],
-  },
-  {
-    id: 'r2', title: 'Feature request: let the gunner aim independently of car heading',
-    description: 'Not a bug, but logging it here since there is nowhere else — would love free-look on the turret.',
-    status: 'wontfix', author: 'skeleton_crew', createdAt: Date.now()-1000*60*60*200, upvotes: 21,
-    githubIssue: null, logFileName: null, screenshot: null,
-    comments: [{ author: 'dasha', text: 'Logging it but parking as wontfix for now — out of scope for the combat rework.', createdAt: Date.now()-1000*60*60*190 }],
-  },
-];
-let MOCK_VOTES = {};
-
 const API_BASE = '/api';
 
-function getToken() {
-  return localStorage.getItem('accessToken');
-}
+// ---- Token storage ----
+const Auth = {
+  getAccess()  { return localStorage.getItem('accessToken'); },
+  getRefresh() { return localStorage.getItem('refreshToken'); },
+  save(access, refresh) {
+    localStorage.setItem('accessToken', access);
+    if (refresh) localStorage.setItem('refreshToken', refresh);
+  },
+  clear() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('bbUser');
+  },
+  saveUser(u) { localStorage.setItem('bbUser', JSON.stringify(u)); },
+  getUser()   {
+    try { return JSON.parse(localStorage.getItem('bbUser')); } catch { return null; }
+  },
+};
 
-function setTokens(data) {
-  if (data.accessToken) localStorage.setItem('accessToken', data.accessToken);
-  if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
-}
-
+// ---- API client ----
 async function request(path, options = {}) {
-  const headers = options.headers || {};
-  const token = getToken();
+  const method = (options.method || 'GET').toUpperCase();
+  // Viewing (GET) is always open. Any action that creates/changes data requires login.
+  if (method !== 'GET' && !bbState.user) {
+    openAuthModal();
+    throw new Error('Please log in to do that.');
+  }
 
+  const headers = { ...(options.headers || {}) };
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
+  const token = Auth.getAccess();
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
-  }
+  let res = await fetch(API_BASE + path, { ...options, headers });
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers,
-  });
-
-  if (!res.ok) {
-    let message = `HTTP ${res.status}`;
-    try {
-      const data = await res.json();
-      message = data.message || message;
-    } catch (_) {}
-    throw new Error(Array.isArray(message) ? message.join(', ') : message);
-  }
-
-  if (res.status === 204) return null;
-  return res.json();
-}
-const STATUS_FROM_BACK = {
-  OPEN: 'open',
-  IN_PROGRESS: 'progress',
-  FIXED: 'fixed',
-  WONTFIX: 'wontfix',
-  DUPLICATE: 'wontfix',
-};
-
-const STATUS_TO_BACK = {
-  open: 'OPEN',
-  progress: 'IN_PROGRESS',
-  fixed: 'FIXED',
-  wontfix: 'WONTFIX',
-};
-
-function mapReportFromBack(r) {
-  return {
-    id: r.id,
-    title: r.title,
-    description: r.description,
-    status: STATUS_FROM_BACK[r.status] || 'open',
-    author: r.author?.username || 'unknown',
-    createdAt: new Date(r.createdAt).getTime(),
-    upvotes: 0,
-    githubIssue: null,
-    logFileName: null,
-    screenshot: r.files && r.files[0] ? r.files[0].fileUrl : null,
-    comments: (r.comments || []).map(c => ({
-      author: c.author?.username || 'unknown',
-      text: c.body,
-      createdAt: new Date(c.createdAt).getTime(),
-    })),
-    _raw: r,
-  };
-}
-
-const API = {
-  async register(u, p) {
-    const email = `${u}@smokingcats.dev`;
-
-    await request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({
-        email,
-        username: u,
-        password: p,
-      }),
-    });
-
-    return this.login(u, p);
-  },
-
-  async login(u, p) {
-    const data = await request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        login: u,
-        password: p,
-      }),
-    });
-
-    setTokens(data);
-
-    return {
-      username: data.user.username,
-      role: data.user.role,
-    };
-  },
-
-  async listReports() {
-    const data = await request('/bug-reports');
-    return data.items.map(mapReportFromBack);
-  },
-
-  async getReport(id) {
-    const r = await request(`/bug-reports/${id}`);
-    return mapReportFromBack(r);
-  },
-
-  async createReport({ title, description, screenshot }, author) {
-    const report = await request('/bug-reports', {
-      method: 'POST',
-      body: JSON.stringify({
-        title,
-        description,
-        priority: 'MEDIUM',
-      }),
-    });
-
-    if (screenshot && screenshot instanceof File) {
-      const fd = new FormData();
-      fd.append('file', screenshot);
-      await request(`/bug-reports/${report.id}/files`, {
-        method: 'POST',
-        body: fd,
-      });
+  if (res.status === 401) {
+    const refreshed = await tryRefresh();
+    if (refreshed) {
+      headers['Authorization'] = `Bearer ${Auth.getAccess()}`;
+      res = await fetch(API_BASE + path, { ...options, headers });
+    } else {
+      Auth.clear();
+      bbState.user = null;
+      bbRender();
+      throw new Error('Session expired. Please log in again.');
     }
+  }
 
-    return mapReportFromBack(report);
-  },
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = data.message || data.error
+      || (Array.isArray(data.errors) ? data.errors.map(e => e.msg || e.message).join(', ') : null)
+      || `Error ${res.status}`;
+    throw new Error(msg);
+  }
+  return data;
+}
 
-  async setStatus(id, status) {
-    const data = await request(`/bug-reports/${id}/status`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        status: STATUS_TO_BACK[status] || 'OPEN',
-      }),
-    });
-    return mapReportFromBack(data);
-  },
-
-  async toggleUpvote(id, username) {
-    showToast('Апвоуты пока работают только в UI');
-    return this.getReport(id);
-  },
-
-  hasVoted(id, username) {
-    return false;
-  },
-
-  async addComment(id, author, text) {
-    return request(`/bug-reports/${id}/comments`, {
+async function tryRefresh() {
+  const rt = Auth.getRefresh();
+  if (!rt) return false;
+  try {
+    const res = await fetch(API_BASE + '/auth/refresh', {
       method: 'POST',
-      body: JSON.stringify({ body: text }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken: rt }),
     });
-  },
-};
+    if (!res.ok) return false;
+    const data = await res.json();
+    Auth.save(data.accessToken, data.refreshToken);
+    return true;
+  } catch { return false; }
+}
 
+// ---- State ----
 const bbState = {
-  user: null, authMode: 'login', authError: '',
-  filterStatus: 'all', searchQuery: '', sortBy: 'newest',
-  bbRoute: 'board', bbParam: null,
-  pendingScreenshot: null, pendingLogName: null,
+  user: Auth.getUser(),
+  authMode: 'login',
+  authError: '',
+  authSuccess: '',
+  authModalOpen: false,
+  route: 'board',
+  param: null,
+  // board filters
+  filterStatus: '',
+  filterPriority: '',
+  searchQuery: '',
+  page: 1,
+  totalPages: 1,
+  // forum
+  forumPage: 1,
+  forumSearch: '',
+  forumTotalPages: 1,
+  // notifications
+  unreadCount: 0,
 };
 
+// ---- Helpers ----
 function esc(str) {
   const d = document.createElement('div');
   d.textContent = str == null ? '' : String(str);
   return d.innerHTML;
 }
 function ago(ts) {
-  const d = Date.now() - ts, m = Math.round(d/60000);
-  if (m < 60) return `${m} мин назад`;
+  if (!ts) return '';
+  const d = Date.now() - new Date(ts).getTime(), m = Math.round(d/60000);
+  if (m < 60) return `${m}m ago`;
   const h = Math.round(m/60);
-  if (h < 24) return `${h} ч назад`;
-  return `${Math.round(h/24)} дн назад`;
+  if (h < 24) return `${h}h ago`;
+  return `${Math.round(h/24)}d ago`;
 }
-function statusLabel(s) { return {open:'OPEN',progress:'IN PROGRESS',fixed:'FIXED',wontfix:"WON'T FIX"}[s]||s; }
-function statusBadgeClass(s) { return {open:'badge-open',progress:'badge-progress',fixed:'badge-fixed',wontfix:'badge-wontfix'}[s]||''; }
-function initials(u) { return (u||'?').slice(0,2).toUpperCase(); }
 
-function showToast(msg) {
+function statusBadge(s) {
+  const map = {
+    OPEN: 'badge-open', IN_PROGRESS: 'badge-progress',
+    FIXED: 'badge-fixed', WONTFIX: 'badge-wontfix', DUPLICATE: 'badge-duplicate'
+  };
+  const label = { OPEN:'OPEN', IN_PROGRESS:'IN PROGRESS', FIXED:'FIXED', WONTFIX:"WON'T FIX", DUPLICATE:'DUPLICATE' };
+  return `<span class="badge ${map[s]||''}">${label[s]||s}</span>`;
+}
+function priorityBadge(p) {
+  const map = { LOW:'badge-prio-low', MEDIUM:'badge-prio-med', HIGH:'badge-prio-high', CRITICAL:'badge-prio-crit' };
+  return `<span class="badge ${map[p]||''}">${p||''}</span>`;
+}
+
+function canEditStatus(role) { return ['DEVELOPER','MODERATOR','ADMIN'].includes(role); }
+function canModerate(role)   { return ['MODERATOR','ADMIN'].includes(role); }
+
+function showToast(msg, error = false) {
   const t = document.getElementById('toast');
   if (!t) return;
   t.textContent = msg;
+  t.style.background = error ? 'var(--blood)' : 'var(--bone)';
+  t.style.color = error ? 'var(--bone)' : 'var(--void)';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2200);
+  setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ---- Router ----
 function bbNavigate(route, param) {
-  bbState.bbRoute = route;
-  bbState.bbParam = param || null;
+  bbState.route = route;
+  bbState.param = param || null;
   bbRender();
 }
 
-function renderBBShell(inner) {
-  const r = bbState.bbRoute;
+// ---- Shell ----
+function renderShell(inner) {
+  const r = bbState.route;
+  const u = bbState.user;
+  const unread = bbState.unreadCount > 0 ? ` <span style="color:var(--acid)">(${bbState.unreadCount})</span>` : '';
+  const rightSide = u ? `
+      <div class="user-chip">
+        <button class="board-nav-link ${r==='profile'?'active':''}" onclick="bbNavigate('profile')">${esc(u.username)}</button>
+        <button class="btn-ghost-sm" onclick="bbLogout()">logout</button>
+      </div>` : `
+      <div class="user-chip">
+        <button class="btn-ghost-sm" onclick="openAuthModal('login')">Login</button>
+        <button class="btn-ghost-sm" onclick="openAuthModal('register')">Register</button>
+      </div>`;
   return `
     <div class="board-topbar">
-      <div class="board-brand">
-        <div><span class="dot">●</span> PILL AFTER PILL<small>BUG BOARD</small></div>
-      </div>
       <div class="board-nav">
-        <button class="board-nav-link ${r==='board'?'active':''}" onclick="bbNavigate('board')">Репорты</button>
-        <button class="board-nav-link ${r==='submit'?'active':''}" onclick="bbNavigate('submit')">+ Новый репорт</button>
+        <button class="board-nav-link ${r==='board'?'active':''}" onclick="bbNavigate('board')">Bug Reports</button>
+        <button class="board-nav-link ${r==='forum'||r==='topic'?'active':''}" onclick="bbNavigate('forum')">Forum</button>
+        <button class="board-nav-link ${r==='submit'?'active':''}" onclick="bbNavigate('submit')">+ New Report</button>
+        ${u?`<button class="board-nav-link ${r==='notifications'?'active':''}" onclick="bbNavigate('notifications')">Notifications${unread}</button>`:''}
       </div>
-      <div class="user-chip">
-        <strong>${esc(bbState.user.username)}</strong>
-        <button class="btn-ghost-sm" onclick="bbLogout()">Выйти</button>
-      </div>
+      ${rightSide}
     </div>
     <div class="bb-page">${inner}</div>
   `;
 }
 
-function bbLogout() {
-  bbState.user = null;
-  bbState.bbRoute = 'board';
-  bbRender();
-}
-
-function renderBBAuth() {
+// ---- Auth (rendered into a modal, viewing the board never requires this) ----
+function renderAuth() {
+  const isLogin = bbState.authMode === 'login';
+  const registerFields = isLogin ? '' : `
+    <div class="field"><label>Email</label><input type="email" id="auth-email" autocomplete="email" placeholder="you@example.com"></div>
+  `;
+  const successHtml = bbState.authSuccess
+    ? `<div style="color:var(--bone);font-family:var(--font-mono);font-size:.8rem;margin-bottom:1rem;">${esc(bbState.authSuccess)}</div>` : '';
   return `
-    <div class="auth-shell">
-      <div class="auth-card">
-        <div class="auth-logo">
-          <strong><span style="color:var(--acid)">●</span> PILL AFTER PILL</strong>
-          <small>BUG BOARD ACCESS</small>
-        </div>
-        <div class="auth-tabs">
-          <div class="auth-tab ${bbState.authMode==='login'?'active':''}" onclick="bbSetAuthMode('login')">Вход</div>
-          <div class="auth-tab ${bbState.authMode==='register'?'active':''}" onclick="bbSetAuthMode('register')">Регистрация</div>
-        </div>
-        <div class="auth-error">${esc(bbState.authError)}</div>
-        <div class="field"><label>Логин</label><input type="text" id="auth-username" autocomplete="username"></div>
-        <div class="field"><label>Пароль</label><input type="password" id="auth-password" autocomplete="current-password"></div>
-        <button class="btn btn-block" onclick="bbDoAuth()">${bbState.authMode==='login'?'Войти':'Создать аккаунт'}</button>
-        <p class="auth-note">Демо-логин: <strong>dasha</strong> / <strong>1234</strong><br>Это фронтенд без настоящего бэкенда.</p>
+    <div class="auth-card">
+      <div class="auth-logo">
+        <strong>PILL AFTER PILL</strong>
+        <small>BUG BOARD ACCESS</small>
       </div>
+      <div class="auth-tabs">
+        <div class="auth-tab ${isLogin?'active':''}" onclick="bbSetAuthMode('login')">Login</div>
+        <div class="auth-tab ${!isLogin?'active':''}" onclick="bbSetAuthMode('register')">Register</div>
+      </div>
+      ${successHtml}
+      <div class="auth-error">${esc(bbState.authError)}</div>
+      ${registerFields}
+      <div class="field"><label>Username${isLogin?' or Email':''}</label><input type="text" id="auth-username" autocomplete="username"></div>
+      <div class="field"><label>Password</label><input type="password" id="auth-password" autocomplete="current-password"></div>
+      <button class="btn btn-block" onclick="bbDoAuth()">${isLogin?'Login':'Create account'}</button>
+      ${isLogin ? `<p class="auth-note" style="margin-top:1rem"><button onclick="bbSetAuthMode('forgot')" style="background:none;border:none;color:var(--acid);cursor:pointer;font-family:var(--font-mono);font-size:.75rem">Forgot password?</button></p>` : ''}
     </div>
   `;
 }
 
-function bbSetAuthMode(m) { bbState.authMode = m; bbState.authError = ''; bbRender(); }
+function bbSetAuthMode(m) { bbState.authMode = m; bbState.authError = ''; bbState.authSuccess = ''; renderAuthModal(); }
 
 async function bbDoAuth() {
-  const u = document.getElementById('auth-username')?.value.trim();
-  const p = document.getElementById('auth-password')?.value;
   bbState.authError = '';
-  try {
-    const result = bbState.authMode === 'login' ? await API.login(u,p) : await API.register(u,p);
-    bbState.user = result;
-    bbRender();
-  } catch(err) {
-    bbState.authError = err.message;
-    bbRender();
+  bbState.authSuccess = '';
+  const username = document.getElementById('auth-username')?.value.trim();
+  const password = document.getElementById('auth-password')?.value;
+
+  if (bbState.authMode === 'register') {
+    const email = document.getElementById('auth-email')?.value.trim();
+    if (!email || !email.includes('@')) { bbState.authError = 'Enter a valid email.'; renderAuthModal(); return; }
+    if (!username || username.length < 3 || username.length > 20) { bbState.authError = 'Username must be 3–20 characters.'; renderAuthModal(); return; }
+    if (!password || password.length < 8) { bbState.authError = 'Password must be at least 8 characters.'; renderAuthModal(); return; }
+    try {
+      const data = await request('/auth/register', { method:'POST', body: JSON.stringify({ email, username, password }) });
+      if (data.accessToken) {
+        Auth.save(data.accessToken, data.refreshToken);
+        Auth.saveUser(data.user);
+        bbState.user = data.user;
+        closeAuthModal();
+        pollUnread();
+        bbRender();
+      } else {
+        bbState.authSuccess = 'Account created. Check your email to verify your account.';
+        renderAuthModal();
+      }
+    } catch(e) { bbState.authError = e.message; renderAuthModal(); }
+  } else {
+    if (!username || !password) { bbState.authError = 'Fill in all fields.'; renderAuthModal(); return; }
+    try {
+      const data = await request('/auth/login', { method:'POST', body: JSON.stringify({ login: username, password }) });
+      Auth.save(data.accessToken, data.refreshToken);
+      Auth.saveUser(data.user);
+      bbState.user = data.user;
+      closeAuthModal();
+      pollUnread();
+      bbRender();
+    } catch(e) { bbState.authError = e.message; renderAuthModal(); }
   }
 }
 
-async function renderBBBoard() {
-  const reports = await API.listReports();
-  let filtered = reports.filter(r => {
-    if (bbState.filterStatus !== 'all' && r.status !== bbState.filterStatus) return false;
-    if (bbState.searchQuery && !r.title.toLowerCase().includes(bbState.searchQuery.toLowerCase())) return false;
-    return true;
-  });
-  filtered.sort((a,b) => bbState.sortBy === 'top' ? b.upvotes - a.upvotes : b.createdAt - a.createdAt);
+function bbLogout() {
+  Auth.clear();
+  bbState.user = null;
+  bbState.route = 'board';
+  bbRender();
+}
 
-  const rows = filtered.map(r => {
-    const voted = API.hasVoted(r.id, bbState.user.username);
-    const gh = r.githubIssue ? `<a class="badge badge-gh" href="https://github.com/${CONFIG.githubRepo}/issues/${r.githubIssue}" target="_blank" rel="noopener" onclick="event.stopPropagation()">gh #${esc(r.githubIssue)}</a>` : '';
-    return `
-      <div class="report-row" onclick="bbNavigate('report','${r.id}')">
-        <div class="upvote ${voted?'voted':''}" onclick="event.stopPropagation();bbUpvote('${r.id}')">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M12 4l8 10h-5v6H9v-6H4z" fill="currentColor"/></svg>
-          <span>${r.upvotes}</span>
+// ---- Forgot / Reset password (also lives inside the modal) ----
+function renderForgot() {
+  return `
+    <div class="auth-card">
+      <button class="back-link" onclick="bbSetAuthMode('login')" style="margin-bottom:1rem;background:none;border:none;color:var(--bone-faint);cursor:pointer;font-family:var(--font-mono);font-size:.78rem;">← Back to login</button>
+      <div class="auth-logo"><strong>Forgot password</strong></div>
+      <div class="auth-error">${esc(bbState.authError)}</div>
+      <div class="auth-success" style="color:var(--bone);font-family:var(--font-mono);font-size:.8rem;margin-bottom:1rem;">${esc(bbState.authSuccess)}</div>
+      <div class="field"><label>Email</label><input type="email" id="forgot-email" placeholder="you@example.com"></div>
+      <button class="btn btn-block" onclick="bbDoForgot()">Send reset link</button>
+    </div>`;
+}
+
+async function bbDoForgot() {
+  const email = document.getElementById('forgot-email')?.value.trim();
+  if (!email) return;
+  try {
+    await request('/auth/forgot-password', { method:'POST', body: JSON.stringify({ email }) });
+    bbState.authSuccess = 'If that email exists, a reset link has been sent.';
+    bbState.authError = '';
+    renderAuthModal();
+  } catch(e) { bbState.authError = e.message; renderAuthModal(); }
+}
+
+// ---- Auth modal mount/unmount ----
+function openAuthModal(mode) {
+  bbState.authMode = mode || 'login';
+  bbState.authError = '';
+  bbState.authSuccess = '';
+  bbState.authModalOpen = true;
+  renderAuthModal();
+}
+function closeAuthModal() {
+  bbState.authModalOpen = false;
+  renderAuthModal();
+}
+function renderAuthModal() {
+  const root = document.getElementById('auth-modal-root');
+  if (!root) return;
+  if (!bbState.authModalOpen) { root.innerHTML = ''; return; }
+  const body = bbState.authMode === 'forgot' ? renderForgot() : renderAuth();
+  root.innerHTML = `
+    <div class="auth-modal-overlay open" onclick="if(event.target===this) closeAuthModal()">
+      <div class="auth-modal-card">
+        <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close">✕</button>
+        ${body}
+      </div>
+    </div>`;
+}
+
+// ---- Bug Board list ----
+async function renderBoard() {
+  let data;
+  try {
+    const params = new URLSearchParams({ page: bbState.page, limit: 20 });
+    if (bbState.filterStatus)   params.set('status', bbState.filterStatus);
+    if (bbState.filterPriority) params.set('priority', bbState.filterPriority);
+    if (bbState.searchQuery)    params.set('search', bbState.searchQuery);
+    data = await request('/bug-reports?' + params);
+    bbState.totalPages = data.totalPages || 1;
+  } catch(e) { return `<div class="empty-state">Failed to load reports: ${esc(e.message)}</div>`; }
+
+  const statuses = ['','OPEN','IN_PROGRESS','FIXED','WONTFIX','DUPLICATE'];
+  const statusLabel = { '':'All', OPEN:'Open', IN_PROGRESS:'In Progress', FIXED:'Fixed', WONTFIX:"Won't Fix", DUPLICATE:'Duplicate' };
+  const priorities = ['','LOW','MEDIUM','HIGH','CRITICAL'];
+
+  const rows = (data.items||[]).map(r => `
+    <div class="report-row" onclick="bbNavigate('report','${r.id}')">
+      <div class="report-main">
+        <div class="title-row">
+          ${statusBadge(r.status)}
+          ${priorityBadge(r.priority)}
+          <span class="title">${esc(r.title)}</span>
+          ${(r.tags||[]).map(t=>`<span class="badge badge-gh">${esc(t.name||t)}</span>`).join('')}
         </div>
-        <div class="report-main">
-          <div class="title-row">
-            <span class="badge ${statusBadgeClass(r.status)}">${statusLabel(r.status)}</span>
-            <span class="title">${esc(r.title)}</span>${gh}
-          </div>
-          <div class="report-meta">
-            <span>${esc(r.author)}</span><span>${ago(r.createdAt)}</span>
-            <span>💬 ${r.comments.length}</span>
-            ${r.logFileName?'<span>📎 лог</span>':''}
-          </div>
+        <div class="report-meta">
+          <span>${esc(r.author?.username)}</span>
+          <span>${ago(r.createdAt)}</span>
+          <span>💬 ${r._count?.comments ?? r.commentsCount ?? 0}</span>
+          ${r._count?.files ? `<span>🖼 ${r._count.files}</span>` : ''}
         </div>
-        <div class="report-side">#${esc(r.id)}</div>
-      </div>`;
-  }).join('');
+      </div>
+      <div class="report-side">#${esc(String(r.id).slice(0,8))}</div>
+    </div>`).join('') || '<div class="empty-state">No reports found.</div>';
+
+  const pagination = bbState.totalPages > 1 ? `
+    <div style="display:flex;gap:.5rem;justify-content:center;margin-top:1.4rem;flex-wrap:wrap;">
+      ${Array.from({length: bbState.totalPages}, (_,i) => `
+        <button class="filter-pill ${bbState.page===i+1?'active':''}" onclick="bbSetPage(${i+1})">${i+1}</button>
+      `).join('')}
+    </div>` : '';
 
   return `
     <div class="board-head">
       <div>
-        <div class="board-title">Репорты игроков</div>
-        <div class="board-sub">${filtered.length} из ${reports.length} · баги, краши, всё подряд</div>
+        <div class="board-title">Bug Reports</div>
+        <div class="board-sub">${data.total||0} total</div>
       </div>
     </div>
     <div class="toolbar">
-      ${['all','open','progress','fixed','wontfix'].map(s=>`
-        <button class="filter-pill ${bbState.filterStatus===s?'active':''}" onclick="bbFilter('${s}')">${s==='all'?'Все':statusLabel(s)}</button>
-      `).join('')}
+      ${statuses.map(s=>`<button class="filter-pill ${bbState.filterStatus===s?'active':''}" onclick="bbFilterStatus('${s}')">${statusLabel[s]}</button>`).join('')}
       <div class="toolbar-spacer"></div>
-      <input type="text" placeholder="Поиск…" value="${esc(bbState.searchQuery)}" oninput="bbSearch(this.value)" style="max-width:220px">
-      <select onchange="bbSort(this.value)" style="width:auto">
-        <option value="newest" ${bbState.sortBy==='newest'?'selected':''}>Сначала новые</option>
-        <option value="top" ${bbState.sortBy==='top'?'selected':''}>Популярные</option>
+      <select onchange="bbFilterPriority(this.value)" style="width:auto">
+        ${priorities.map(p=>`<option value="${p}" ${bbState.filterPriority===p?'selected':''}>${p||'All priorities'}</option>`).join('')}
       </select>
+      <input type="text" placeholder="Search…" value="${esc(bbState.searchQuery)}" oninput="bbSearch(this.value)" style="max-width:200px">
     </div>
-    <div class="report-list">${rows||'<div class="empty-state">Ничего не найдено.</div>'}</div>
+    <div class="report-list">${rows}</div>
+    ${pagination}
   `;
 }
 
-function bbFilter(f) { bbState.filterStatus = f; bbRender(); }
-function bbSearch(v) { bbState.searchQuery = v; bbRender(); }
-function bbSort(v) { bbState.sortBy = v; bbRender(); }
-async function bbUpvote(id) { await API.toggleUpvote(id, bbState.user.username); bbRender(); }
+function bbFilterStatus(s) { bbState.filterStatus = s; bbState.page = 1; bbRender(); }
+function bbFilterPriority(p) { bbState.filterPriority = p; bbState.page = 1; bbRender(); }
+function bbSearch(v) { bbState.searchQuery = v; bbState.page = 1; bbRender(); }
+function bbSetPage(p) { bbState.page = p; bbRender(); }
 
-async function renderBBDetail(id) {
+// ---- Report detail ----
+async function renderReport(id) {
   let r;
-  try { r = await API.getReport(id); }
-  catch { return `<div class="empty-state">Репорт не найден. <button class="back-link" onclick="bbNavigate('board')">Вернуться</button></div>`; }
-  const voted = API.hasVoted(r.id, bbState.user.username);
-  const gh = r.githubIssue ? `<a class="badge badge-gh" href="https://github.com/${CONFIG.githubRepo}/issues/${r.githubIssue}" target="_blank">gh #${esc(r.githubIssue)}</a>` : '';
-  const comments = r.comments.map(c=>`
-    <div class="comment">
-      <div class="avatar">${esc(initials(c.author))}</div>
-      <div>
-        <div class="comment-head"><strong>${esc(c.author)}</strong><span>${ago(c.createdAt)}</span></div>
-        <div class="comment-body"><div class="comment-text">${esc(c.text)}</div></div>
-      </div>
-    </div>`).join('') || '<p style="color:var(--bone-faint);font-size:.85rem;">Комментариев пока нет.</p>';
+  try { r = await request(`/bug-reports/${id}`); }
+  catch(e) { return `<div class="empty-state">Report not found: ${esc(e.message)}</div>`; }
+
+  const user = bbState.user;
+  const canStatus = canEditStatus(user?.role);
+  const canMod = canModerate(user?.role);
+  const isAuthor = user?.id === r.author?.id;
+
+  const statusSelect = canStatus ? `
+    <select class="status-select" onchange="bbSetStatus('${r.id}',this.value)">
+      ${['OPEN','IN_PROGRESS','FIXED','WONTFIX','DUPLICATE'].map(s=>`<option value="${s}" ${r.status===s?'selected':''}>${s}</option>`).join('')}
+    </select>` : statusBadge(r.status);
+
+  const files = (r.files||[]).map(f => `
+    <a class="attachment" href="/uploads/${esc(f.storedName)}" target="_blank">
+      <img src="/uploads/${esc(f.storedName)}" style="width:28px;height:28px;object-fit:cover;border-radius:2px" onerror="this.style.display='none'">
+      ${esc(f.originalName||f.storedName)}
+      ${(isAuthor||canMod)?`<button onclick="event.stopPropagation();bbDeleteFile('${r.id}','${f.id}')" style="background:none;border:none;color:var(--blood);cursor:pointer;margin-left:.4rem">✕</button>`:''}
+    </a>`).join('');
+
+  const renderComments = (comments, parentId = null, depth = 0) => {
+    return (comments||[]).filter(c => (c.parentId||null) === parentId).map(c => {
+      const canDel = user?.id === c.author?.id || canMod;
+      const children = renderComments(comments, c.id, depth+1);
+      return `
+        <div class="comment" style="${depth > 0 ? 'margin-left:2rem;' : ''}">
+          <div class="avatar">${esc((c.author?.username||'?').slice(0,2).toUpperCase())}</div>
+          <div style="flex:1">
+            <div class="comment-body">
+              <div class="comment-head">
+                <strong>${esc(c.author?.username)}</strong>
+                <span>${ago(c.createdAt)}</span>
+                ${canDel?`<button onclick="bbDeleteComment('${r.id}','${c.id}')" style="background:none;border:none;color:var(--blood);cursor:pointer;font-size:.7rem;margin-left:auto">delete</button>`:''}
+              </div>
+              <div class="comment-text">${esc(c.body||c.text)}</div>
+            </div>
+            <button onclick="bbShowReply('${c.id}')" style="background:none;border:none;color:var(--bone-faint);cursor:pointer;font-family:var(--font-mono);font-size:.7rem;margin-top:.3rem">↩ reply</button>
+            <div id="reply-${c.id}" style="display:none;margin-top:.5rem">
+              <div class="comment-form">
+                <textarea id="reply-text-${c.id}" style="min-height:60px" placeholder="Reply…"></textarea>
+                <button class="btn" onclick="bbAddComment('${r.id}','${c.id}')">Send</button>
+              </div>
+            </div>
+            ${children}
+          </div>
+        </div>`;
+    }).join('');
+  };
 
   return `
-    <button class="back-link" onclick="bbNavigate('board')">← Все репорты</button>
+    <button class="back-link" onclick="bbNavigate('board')">← All reports</button>
     <div class="detail-head">
       <div>
         <div class="detail-title">${esc(r.title)}</div>
-        <div class="detail-meta"><span>от ${esc(r.author)}</span><span>${ago(r.createdAt)}</span><span>#${esc(r.id)}</span>${gh}</div>
+        <div class="detail-meta">
+          <span>by ${esc(r.author?.username)}</span>
+          <span>${ago(r.createdAt)}</span>
+          ${priorityBadge(r.priority)}
+          ${r.gameVersion?`<span>v${esc(r.gameVersion)}</span>`:''}
+          ${r.isArchived?`<span style="color:var(--bone-faint)">[archived]</span>`:''}
+        </div>
       </div>
-      <select class="status-select" onchange="bbSetStatus('${r.id}',this.value)">
-        ${['open','progress','fixed','wontfix'].map(s=>`<option value="${s}" ${r.status===s?'selected':''}>${statusLabel(s)}</option>`).join('')}
-      </select>
-    </div>
-    <div class="upvote-row">
-      <div class="upvote ${voted?'voted':''}" onclick="bbUpvote('${r.id}')">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 4l8 10h-5v6H9v-6H4z" fill="currentColor"/></svg>
-        <span>${r.upvotes}</span>
+      <div style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;">
+        ${statusSelect}
+        ${canMod&&!r.isArchived?`<button class="btn-ghost-sm" onclick="bbArchive('${r.id}')">Archive</button>`:''}
+        ${isAuthor||canMod?`<button class="btn-ghost-sm" onclick="bbDeleteReport('${r.id}')">Delete</button>`:''}
       </div>
-      <span style="color:var(--bone-faint);font-size:.85rem;">апвоутов</span>
     </div>
     <div class="detail-body">${esc(r.description)}</div>
-    ${r.logFileName?`<div class="attachments"><div class="attachment">📎 ${esc(r.logFileName)}</div></div>`:''}
-    ${r.screenshot?`<div class="detail-screenshot"><img src="${r.screenshot}" alt="Screenshot"></div>`:''}
-    <div class="comments-head">КОММЕНТАРИИ (${r.comments.length})</div>
-    <div id="bb-comments">${comments}</div>
-    <div class="comment-form" style="margin-top:1.4rem">
-      <textarea id="bb-comment-text" placeholder="Написать комментарий…"></textarea>
-      <button class="btn" onclick="bbAddComment('${r.id}')">Отправить</button>
-    </div>
-  `;
-}
-
-async function bbSetStatus(id, s) { await API.setStatus(id,s); showToast('Статус обновлён'); bbRender(); }
-
-async function bbAddComment(id) {
-  const ta = document.getElementById('bb-comment-text');
-  if (!ta) return;
-  const text = ta.value.trim();
-  if (!text) return;
-  await API.addComment(id, bbState.user.username, text);
-  ta.value = '';
-  bbRender();
-}
-
-async function renderBBSubmit() {
-  return `
-    <button class="back-link" onclick="bbNavigate('board')">← Все репорты</button>
-    <div class="board-title" style="margin-bottom:1.4rem;">Новый баг-репорт</div>
-    <div class="form-card">
-      <div class="field"><label>Заголовок</label><input type="text" id="report-title" placeholder="Коротко: что пошло не так"></div>
-      <div class="field"><label>Описание</label><textarea id="report-description" placeholder="Что делал, что случилось, как повторить…"></textarea></div>
-      <div class="form-row-2">
-        <div class="field">
-          <label>Лог-файл (необязательно)</label>
-          <div class="file-drop" id="log-drop">
-            <span id="log-drop-label">Нажми, чтобы выбрать файл</span>
-            <input type="file" id="log-input" accept=".log,.txt,.zip" onchange="bbLogPick(this)">
-          </div>
-        </div>
-        <div class="field">
-          <label>Скриншот (необязательно)</label>
-          <div class="file-drop" id="shot-drop">
-            <span id="shot-drop-label">Нажми, чтобы выбрать картинку</span>
-            <input type="file" id="shot-input" accept="image/*" onchange="bbShotPick(this)">
-          </div>
-          <img id="shot-preview" class="img-preview" style="display:none">
-        </div>
+    ${r.extraData?`<div class="detail-body" style="font-size:.85rem;color:var(--bone-faint)">${esc(JSON.stringify(r.extraData,null,2))}</div>`:''}
+    ${files?`<div class="attachments">${files}</div>`:''}
+    <div class="field" style="margin-bottom:1.5rem">
+      <label>Add image</label>
+      <div class="file-drop ${bbState.pendingFile?'has-file':''}" id="shot-drop">
+        <span id="shot-label">${bbState.pendingFile?'🖼 '+bbState.pendingFile.name:'Click to attach image (max 10MB)'}</span>
+        <input type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" onchange="bbPickFile(this)">
       </div>
-      <button class="btn btn-block" onclick="bbSubmitReport()" style="margin-top:0.6rem;">Отправить репорт</button>
+      ${bbState.pendingPreview?`<img src="${bbState.pendingPreview}" class="img-preview">`:''}
+      ${bbState.pendingFile?`<button class="btn" style="margin-top:.5rem" onclick="bbUploadFile('${r.id}')">Upload</button>`:''}
+    </div>
+    <div class="comments-head">COMMENTS (${(r.comments||[]).length})</div>
+    <div id="bb-comments">${renderComments(r.comments)}</div>
+    <div class="comment-form" style="margin-top:1.4rem">
+      <textarea id="bb-comment-text" placeholder="Write a comment…"></textarea>
+      <button class="btn" onclick="bbAddComment('${r.id}',null)">Send</button>
     </div>
   `;
 }
 
-function bbLogPick(input) {
-  const f = input.files[0];
-  if (!f) return;
-  bbState.pendingLogName = f.name;
-  document.getElementById('log-drop-label').textContent = '📎 ' + f.name;
-  document.getElementById('log-drop').classList.add('has-file');
+function bbShowReply(commentId) {
+  const el = document.getElementById(`reply-${commentId}`);
+  if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
-function bbShotPick(input) {
+
+async function bbSetStatus(id, s) {
+  try { await request(`/bug-reports/${id}/status`, { method:'PATCH', body: JSON.stringify({ status: s }) }); showToast('Status updated'); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbArchive(id) {
+  try { await request(`/bug-reports/${id}/archive`, { method:'PATCH' }); showToast('Archived'); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbDeleteReport(id) {
+  if (!confirm('Delete this report?')) return;
+  try { await request(`/bug-reports/${id}`, { method:'DELETE' }); showToast('Deleted'); bbNavigate('board'); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbDeleteFile(reportId, fileId) {
+  if (!confirm('Delete this file?')) return;
+  try { await request(`/bug-reports/${reportId}/files/${fileId}`, { method:'DELETE' }); showToast('File deleted'); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbAddComment(reportId, parentId) {
+  const ta = parentId
+    ? document.getElementById(`reply-text-${parentId}`)
+    : document.getElementById('bb-comment-text');
+  if (!ta) return;
+  const body = ta.value.trim();
+  if (body.length < 2) { showToast('Comment too short', true); return; }
+  try {
+    await request(`/bug-reports/${reportId}/comments`, { method:'POST', body: JSON.stringify({ body, ...(parentId ? { parentId } : {}) }) });
+    ta.value = '';
+    bbRender();
+  } catch(e) { showToast(e.message, true); }
+}
+
+async function bbDeleteComment(reportId, commentId) {
+  if (!confirm('Delete comment?')) return;
+  try { await request(`/bug-reports/comments/${commentId}`, { method:'DELETE' }); showToast('Comment deleted'); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+// file upload
+bbState.pendingFile = null;
+bbState.pendingPreview = null;
+
+function bbPickFile(input) {
   const f = input.files[0];
   if (!f) return;
+  if (f.size > 10 * 1024 * 1024) { showToast('Max file size is 10MB', true); return; }
+  bbState.pendingFile = f;
+  const reader = new FileReader();
+  reader.onload = e => { bbState.pendingPreview = e.target.result; bbRender(); };
+  reader.readAsDataURL(f);
+}
+
+async function bbUploadFile(reportId) {
+  if (!bbState.pendingFile) return;
+  const fd = new FormData();
+  fd.append('file', bbState.pendingFile);
+  try {
+    await request(`/bug-reports/${reportId}/files`, { method:'POST', body: fd });
+    bbState.pendingFile = null;
+    bbState.pendingPreview = null;
+    showToast('File uploaded');
+    bbRender();
+  } catch(e) { showToast(e.message, true); }
+}
+
+// ---- Submit new report ----
+async function renderSubmit() {
+  return `
+    <button class="back-link" onclick="bbNavigate('board')" style="background:none;border:none;color:var(--bone-faint);cursor:pointer;font-family:var(--font-mono);font-size:.78rem;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.2rem">← All reports</button>
+    <div class="board-title" style="margin-bottom:1.4rem">New Bug Report</div>
+    <div class="form-card">
+      <div class="auth-error" id="submit-error"></div>
+      <div class="field"><label>Title (10–200 chars)</label><input type="text" id="report-title" placeholder="Short: what went wrong"></div>
+      <div class="field"><label>Description (min 30 chars)</label><textarea id="report-description" placeholder="What happened, how to reproduce…"></textarea></div>
+      <div class="field">
+        <label>Priority</label>
+        <select id="report-priority">
+          <option value="LOW">LOW</option>
+          <option value="MEDIUM" selected>MEDIUM</option>
+          <option value="HIGH">HIGH</option>
+          <option value="CRITICAL">CRITICAL</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Screenshot (optional, max 10MB)</label>
+        <div class="file-drop" id="submit-shot-drop">
+          <span id="submit-shot-label">Click to attach image</span>
+          <input type="file" accept="image/png,image/jpeg,image/jpg,image/gif,image/webp" onchange="bbSubmitPickFile(this)">
+        </div>
+        <img id="submit-shot-preview" class="img-preview" style="display:none">
+      </div>
+      <button class="btn btn-block" onclick="bbSubmitReport()" style="margin-top:.6rem">Submit Report</button>
+    </div>
+  `;
+}
+
+bbState.submitFile = null;
+
+function bbSubmitPickFile(input) {
+  const f = input.files[0];
+  if (!f) return;
+  if (f.size > 10 * 1024 * 1024) { showToast('Max 10MB', true); return; }
+  bbState.submitFile = f;
   const reader = new FileReader();
   reader.onload = e => {
-    bbState.pendingScreenshot = f;
-    document.getElementById('shot-drop-label').textContent = '🖼 ' + f.name;
-    document.getElementById('shot-drop').classList.add('has-file');
-    const prev = document.getElementById('shot-preview');
-    prev.src = e.target.result;
-    prev.style.display = 'block';
+    const prev = document.getElementById('submit-shot-preview');
+    const label = document.getElementById('submit-shot-label');
+    const drop = document.getElementById('submit-shot-drop');
+    if (prev) { prev.src = e.target.result; prev.style.display = 'block'; }
+    if (label) label.textContent = '🖼 ' + f.name;
+    if (drop) drop.classList.add('has-file');
   };
   reader.readAsDataURL(f);
 }
+
 async function bbSubmitReport() {
   const title = document.getElementById('report-title')?.value.trim();
   const desc  = document.getElementById('report-description')?.value.trim();
-  if (!title || !desc) return;
-  const report = await API.createReport({ title, description: desc, logFileName: bbState.pendingLogName, screenshot: bbState.pendingScreenshot }, bbState.user.username);
-  bbState.pendingLogName = null;
-  bbState.pendingScreenshot = null;
-  bbNavigate('report', report.id);
-  showToast('Репорт опубликован');
+  const priority = document.getElementById('report-priority')?.value;
+  const errEl = document.getElementById('submit-error');
+
+  if (!title || title.length < 10 || title.length > 200) { if(errEl) errEl.textContent = 'Title must be 10–200 characters.'; return; }
+  if (!desc  || desc.length < 30)  { if(errEl) errEl.textContent = 'Description must be at least 30 characters.'; return; }
+  if (errEl) errEl.textContent = '';
+
+  try {
+    const report = await request('/bug-reports', { method:'POST', body: JSON.stringify({ title, description: desc, priority }) });
+    if (bbState.submitFile) {
+      const fd = new FormData();
+      fd.append('file', bbState.submitFile);
+      await request(`/bug-reports/${report.id}/files`, { method:'POST', body: fd }).catch(() => {});
+      bbState.submitFile = null;
+    }
+    showToast('Report submitted');
+    bbNavigate('report', report.id);
+  } catch(e) { if(errEl) errEl.textContent = e.message; }
 }
 
+// ---- Forum ----
+async function renderForum() {
+  let data;
+  try {
+    const params = new URLSearchParams({ page: bbState.forumPage, limit: 20 });
+    if (bbState.forumSearch) params.set('search', bbState.forumSearch);
+    data = await request('/forum/topics?' + params);
+    bbState.forumTotalPages = data.totalPages || 1;
+  } catch(e) { return `<div class="empty-state">Failed to load forum: ${esc(e.message)}</div>`; }
+
+  const rows = (data.items||[]).map(t => `
+    <div class="report-row" onclick="bbNavigate('topic','${t.id}')">
+      <div class="report-main">
+        <div class="title-row">
+          ${t.isPinned?`<span class="badge" style="color:var(--acid)">📌</span>`:''}
+          ${t.isLocked?`<span class="badge" style="color:var(--bone-faint)">🔒</span>`:''}
+          <span class="title">${esc(t.title)}</span>
+        </div>
+        <div class="report-meta">
+          <span>${esc(t.author?.username)}</span>
+          <span>${ago(t.createdAt)}</span>
+          <span>💬 ${t._count?.comments ?? 0}</span>
+        </div>
+      </div>
+    </div>`).join('') || '<div class="empty-state">No topics yet.</div>';
+
+  const pagination = bbState.forumTotalPages > 1 ? `
+    <div style="display:flex;gap:.5rem;justify-content:center;margin-top:1.4rem;flex-wrap:wrap;">
+      ${Array.from({length: bbState.forumTotalPages}, (_,i) => `
+        <button class="filter-pill ${bbState.forumPage===i+1?'active':''}" onclick="bbForumPage(${i+1})">${i+1}</button>
+      `).join('')}
+    </div>` : '';
+
+  return `
+    <div class="board-head">
+      <div><div class="board-title">Forum</div><div class="board-sub">${data.total||0} topics</div></div>
+      <button class="btn" onclick="bbNavigate('new-topic')">+ New Topic</button>
+    </div>
+    <div class="toolbar">
+      <input type="text" placeholder="Search…" value="${esc(bbState.forumSearch)}" oninput="bbForumSearch(this.value)" style="max-width:260px">
+    </div>
+    <div class="report-list">${rows}</div>
+    ${pagination}
+  `;
+}
+
+function bbForumPage(p) { bbState.forumPage = p; bbRender(); }
+function bbForumSearch(v) { bbState.forumSearch = v; bbState.forumPage = 1; bbRender(); }
+
+async function renderTopic(id) {
+  let t;
+  try { t = await request(`/forum/topics/${id}`); }
+  catch(e) { return `<div class="empty-state">Topic not found: ${esc(e.message)}</div>`; }
+
+  const user = bbState.user;
+  const canMod = canModerate(user?.role);
+  const isAuthor = user?.id === t.author?.id;
+
+  const comments = (t.comments||[]).map(c => {
+    const canDel = user?.id === c.author?.id || canMod;
+    return `
+      <div class="comment">
+        <div class="avatar">${esc((c.author?.username||'?').slice(0,2).toUpperCase())}</div>
+        <div>
+          <div class="comment-body">
+            <div class="comment-head">
+              <strong>${esc(c.author?.username)}</strong>
+              <span>${ago(c.createdAt)}</span>
+              ${canDel?`<button onclick="bbDeleteForumComment('${c.id}')" style="background:none;border:none;color:var(--blood);cursor:pointer;font-size:.7rem;margin-left:auto">delete</button>`:''}
+            </div>
+            <div class="comment-text">${esc(c.body)}</div>
+          </div>
+        </div>
+      </div>`;
+  }).join('') || '<p style="color:var(--bone-faint);font-size:.85rem">No comments yet.</p>';
+
+  const commentForm = t.isLocked
+    ? `<p style="color:var(--bone-faint);font-family:var(--font-mono);font-size:.8rem;margin-top:1.4rem">This topic is locked.</p>`
+    : `<div class="comment-form" style="margin-top:1.4rem">
+        <textarea id="forum-comment-text" placeholder="Write a comment… (min 2 chars)"></textarea>
+        <button class="btn" onclick="bbAddForumComment('${t.id}')">Send</button>
+      </div>`;
+
+  return `
+    <button class="back-link" onclick="bbNavigate('forum')" style="background:none;border:none;color:var(--bone-faint);cursor:pointer;font-family:var(--font-mono);font-size:.78rem;display:inline-flex;align-items:center;gap:.4rem;margin-bottom:1.2rem">← Forum</button>
+    <div class="detail-head">
+      <div>
+        <div class="detail-title">${esc(t.title)}</div>
+        <div class="detail-meta"><span>by ${esc(t.author?.username)}</span><span>${ago(t.createdAt)}</span></div>
+      </div>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        ${canMod?`<button class="btn-ghost-sm" onclick="bbToggleLock('${t.id}')">${t.isLocked?'Unlock':'Lock'}</button>`:''}
+        ${canMod?`<button class="btn-ghost-sm" onclick="bbTogglePin('${t.id}')">${t.isPinned?'Unpin':'Pin'}</button>`:''}
+        ${isAuthor||canMod?`<button class="btn-ghost-sm" onclick="bbDeleteTopic('${t.id}')">Delete</button>`:''}
+      </div>
+    </div>
+    <div class="detail-body">${esc(t.body)}</div>
+    <div class="comments-head">COMMENTS (${(t.comments||[]).length})</div>
+    ${comments}
+    ${commentForm}
+  `;
+}
+
+async function bbAddForumComment(topicId) {
+  const ta = document.getElementById('forum-comment-text');
+  const body = ta?.value.trim();
+  if (!body || body.length < 2) return;
+  try {
+    await request(`/forum/topics/${topicId}/comments`, { method:'POST', body: JSON.stringify({ body }) });
+    ta.value = '';
+    bbRender();
+  } catch(e) { showToast(e.message, true); }
+}
+
+async function bbDeleteForumComment(id) {
+  if (!confirm('Delete?')) return;
+  try { await request(`/forum/comments/${id}`, { method:'DELETE' }); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbToggleLock(id) {
+  try { await request(`/forum/topics/${id}/lock`, { method:'PATCH' }); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbTogglePin(id) {
+  try { await request(`/forum/topics/${id}/pin`, { method:'PATCH' }); bbRender(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbDeleteTopic(id) {
+  if (!confirm('Delete topic?')) return;
+  try { await request(`/forum/topics/${id}`, { method:'DELETE' }); showToast('Deleted'); bbNavigate('forum'); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function renderNewTopic() {
+  return `
+    <button class="back-link" onclick="bbNavigate('forum')" style="background:none;border:none;color:var(--bone-faint);cursor:pointer;font-family:var(--font-mono);font-size:.78rem;margin-bottom:1.2rem">← Forum</button>
+    <div class="board-title" style="margin-bottom:1.4rem">New Topic</div>
+    <div class="form-card">
+      <div class="auth-error" id="topic-error"></div>
+      <div class="field"><label>Title (5–200 chars)</label><input type="text" id="topic-title" placeholder="Topic title"></div>
+      <div class="field"><label>Body (min 10 chars)</label><textarea id="topic-body" placeholder="Write your topic…" style="min-height:160px"></textarea></div>
+      <button class="btn btn-block" onclick="bbSubmitTopic()">Post Topic</button>
+    </div>
+  `;
+}
+
+async function bbSubmitTopic() {
+  const title = document.getElementById('topic-title')?.value.trim();
+  const body  = document.getElementById('topic-body')?.value.trim();
+  const errEl = document.getElementById('topic-error');
+  if (!title || title.length < 5 || title.length > 200) { if(errEl) errEl.textContent = 'Title must be 5–200 chars.'; return; }
+  if (!body  || body.length < 10) { if(errEl) errEl.textContent = 'Body must be at least 10 chars.'; return; }
+  try {
+    const t = await request('/forum/topics', { method:'POST', body: JSON.stringify({ title, body }) });
+    showToast('Topic created');
+    bbNavigate('topic', t.id);
+  } catch(e) { if(errEl) errEl.textContent = e.message; }
+}
+
+// ---- Profile ----
+async function renderProfile() {
+  let me, myReports, myTopics;
+  try {
+    [me, myReports, myTopics] = await Promise.all([
+      request('/users/me'),
+      request('/users/me/bug-reports'),
+      request('/users/me/topics'),
+    ]);
+    Auth.saveUser(me);
+    bbState.user = me;
+  } catch(e) { return `<div class="empty-state">Failed to load profile: ${esc(e.message)}</div>`; }
+
+  return `
+    <div class="board-title" style="margin-bottom:.5rem">${esc(me.username)}</div>
+    <div class="report-meta" style="margin-bottom:1.5rem">
+      <span>${esc(me.email)}</span>
+      <span style="color:var(--acid)">${esc(me.role)}</span>
+      ${me.isVerified?'<span style="color:var(--green)">✓ verified</span>':'<span style="color:var(--rust)">⚠ not verified</span>'}
+      <span>joined ${ago(me.createdAt)}</span>
+    </div>
+
+    <div class="comments-head">MY REPORTS (${(myReports.items||myReports||[]).length})</div>
+    <div class="report-list" style="margin-bottom:1.5rem">
+      ${(myReports.items||myReports||[]).slice(0,5).map(r=>`
+        <div class="report-row" onclick="bbNavigate('report','${r.id}')">
+          <div class="report-main">
+            <div class="title-row">${statusBadge(r.status)}<span class="title">${esc(r.title)}</span></div>
+          </div>
+        </div>`).join('') || '<div class="empty-state">No reports yet.</div>'}
+    </div>
+
+    <div class="comments-head">MY TOPICS (${(myTopics.items||myTopics||[]).length})</div>
+    <div class="report-list" style="margin-bottom:2rem">
+      ${(myTopics.items||myTopics||[]).slice(0,5).map(t=>`
+        <div class="report-row" onclick="bbNavigate('topic','${t.id}')">
+          <div class="report-main">
+            <div class="title-row"><span class="title">${esc(t.title)}</span></div>
+          </div>
+        </div>`).join('') || '<div class="empty-state">No topics yet.</div>'}
+    </div>
+
+    <div class="comments-head">CHANGE PASSWORD</div>
+    <div class="form-card" style="max-width:400px">
+      <div class="auth-error" id="pw-error"></div>
+      <div class="field"><label>Old password</label><input type="password" id="pw-old"></div>
+      <div class="field"><label>New password (min 8 chars)</label><input type="password" id="pw-new"></div>
+      <div class="field"><label>Repeat new password</label><input type="password" id="pw-repeat"></div>
+      <button class="btn" onclick="bbChangePassword()">Update password</button>
+    </div>
+  `;
+}
+
+async function bbChangePassword() {
+  const oldPw  = document.getElementById('pw-old')?.value;
+  const newPw  = document.getElementById('pw-new')?.value;
+  const repeat = document.getElementById('pw-repeat')?.value;
+  const errEl  = document.getElementById('pw-error');
+  if (newPw !== repeat) { if(errEl) errEl.textContent = 'Passwords do not match.'; return; }
+  if (!newPw || newPw.length < 8) { if(errEl) errEl.textContent = 'Min 8 characters.'; return; }
+  try {
+    await request('/users/me/password', { method:'PATCH', body: JSON.stringify({ oldPassword: oldPw, newPassword: newPw }) });
+    showToast('Password updated');
+    if(errEl) errEl.textContent = '';
+  } catch(e) { if(errEl) errEl.textContent = e.message; }
+}
+
+// ---- Notifications ----
+async function renderNotifications() {
+  let data;
+  try { data = await request('/notifications'); }
+  catch(e) { return `<div class="empty-state">Failed to load notifications: ${esc(e.message)}</div>`; }
+
+  const typeLabel = { status_change:'Status changed', bug_comment:'New comment', comment_reply:'Reply' };
+  const items = (Array.isArray(data) ? data : data.items || []);
+
+  const rows = items.map(n => `
+    <div class="report-row ${n.isRead?'':''}">
+      <div class="report-main">
+        <div class="title-row">
+          ${!n.isRead?`<span class="badge badge-open">NEW</span>`:''}
+          <span class="title">${typeLabel[n.type]||n.type}</span>
+        </div>
+        <div class="report-meta"><span>${ago(n.createdAt)}</span></div>
+      </div>
+      <div style="display:flex;gap:.5rem">
+        ${!n.isRead?`<button class="btn-ghost-sm" onclick="bbMarkRead('${n.id}')">Mark read</button>`:''}
+        <button class="btn-ghost-sm" onclick="bbDeleteNotif('${n.id}')">✕</button>
+      </div>
+    </div>`).join('') || '<div class="empty-state">No notifications.</div>';
+
+  return `
+    <div class="board-head">
+      <div><div class="board-title">Notifications</div></div>
+      ${items.some(n=>!n.isRead)?`<button class="btn btn-outline" onclick="bbMarkAllRead()">Mark all read</button>`:''}
+    </div>
+    <div class="report-list">${rows}</div>
+  `;
+}
+
+async function bbMarkRead(id) {
+  try { await request(`/notifications/${id}/read`, { method:'PATCH' }); bbRender(); pollUnread(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbMarkAllRead() {
+  try { await request('/notifications/read-all', { method:'PATCH' }); bbRender(); pollUnread(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function bbDeleteNotif(id) {
+  try { await request(`/notifications/${id}`, { method:'DELETE' }); bbRender(); pollUnread(); }
+  catch(e) { showToast(e.message, true); }
+}
+
+async function pollUnread() {
+  try {
+    const data = await request('/notifications/unread-count');
+    bbState.unreadCount = data.count || 0;
+    const nav = document.querySelector('.board-nav');
+    if (nav) {
+      const notifBtn = nav.querySelector('button:last-child');
+      // just re-render shell to update badge
+    }
+  } catch {}
+}
+
+// ---- Main render ----
 async function bbRender() {
   const app = document.getElementById('bb-app');
   if (!app) return;
 
-  if (!bbState.user) {
-    app.innerHTML = renderBBAuth();
-    return;
+  // Only account-specific pages require being logged in.
+  // Everything else (bug list, bug detail, forum, topics, submit/new-topic forms)
+  // can be viewed freely — the underlying actions ask for login when actually used.
+  if (!bbState.user && (bbState.route === 'profile' || bbState.route === 'notifications')) {
+    bbState.route = 'board';
+    openAuthModal('login');
   }
 
-  let inner;
-  if (bbState.bbRoute === 'submit') {
-    inner = await renderBBSubmit();
-  } else if (bbState.bbRoute === 'report' && bbState.bbParam) {
-    inner = await renderBBDetail(bbState.bbParam);
-  } else {
-    inner = await renderBBBoard();
+  let inner = '<div class="empty-state">Loading…</div>';
+  try {
+    switch(bbState.route) {
+      case 'board':         inner = await renderBoard(); break;
+      case 'report':        inner = await renderReport(bbState.param); break;
+      case 'submit':        inner = await renderSubmit(); break;
+      case 'forum':         inner = await renderForum(); break;
+      case 'topic':         inner = await renderTopic(bbState.param); break;
+      case 'new-topic':     inner = await renderNewTopic(); break;
+      case 'profile':       inner = await renderProfile(); break;
+      case 'notifications': inner = await renderNotifications(); break;
+      default:              inner = await renderBoard();
+    }
+  } catch(e) {
+    inner = `<div class="empty-state">Error: ${esc(e.message)}</div>`;
   }
 
-  app.innerHTML = renderBBShell(inner);
+  app.innerHTML = renderShell(inner);
 }
 
 function initBugBoard() {
+  if (bbState.user) pollUnread();
   bbRender();
 }
 </script>
